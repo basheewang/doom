@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwzh
+# key: mwzh
+# --
+\markword[\mbox]{[${1:Likewise}]${3}}{${2}状语}$0

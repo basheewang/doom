@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwz
+# key: mwz
+# --
+\markword[\uuline]{\textbf{$1}}{主语$2}$0

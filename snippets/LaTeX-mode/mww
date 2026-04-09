@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mww
+# key: mww
+# --
+\markword{$1}{谓语$2}$0

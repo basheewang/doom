@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwd
+# key: mwd
+# --
+\markword[\mbox]{($1)$4}{$2定语（$3）}$0

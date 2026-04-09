@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: zy
+# key: zy
+# --
+\markword[\mbox]{\Large\textcolor{orange}{\\( [ \\)}}{\textcolor{orange}{${1}壮语开始}}
+$0
+\markword[\mbox]{{\Large\textcolor{orange}{\\( ] \\)}}${2}}{\textcolor{orange}{${1}壮语结束}}

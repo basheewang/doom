@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: bzy
+# key: bzy
+# --
+\markword[\mbox]{\Large\textcolor{violet}{\\( < \\)}}{\textcolor{violet}{$1补足语开始}}
+$0
+\markword[\mbox]{{\Large\textcolor{violet}{\\( > \\)}}}{\textcolor{violet}{$1补足语结束}}

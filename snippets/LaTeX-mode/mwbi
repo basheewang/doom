@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwbi
+# key: mwbi
+# --
+\markword[\uuwave]{$1}{$2表语$3}$0

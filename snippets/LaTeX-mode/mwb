@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwb
+# key: mwb
+# --
+\markword[\uwave]{$1}{宾语$2}$0

@@ -44,12 +44,19 @@
 ;;     (set-fontset-font t charset (font-spec :family "FZSongKeBenXiuKai-R-GBK" :size 20))))
 
 (defun my-cjk-font()
+  ;; 1. 先设置基础 CJK 字符集（这会覆盖绝大多数常用汉字）
   (dolist (charset '(kana han cjk-misc symbol bopomofo hangul))
     (cond ((eq charset 'hangul)
            (set-fontset-font t charset (font-spec :family "Noto Serif KR" :size 20)))
           (t
-           (set-fontset-font t charset (font-spec :family "FZSongKeBenXiuKai-R-GBK" :size 20))))))
+           (set-fontset-font t charset (font-spec :family "FZSongKeBenXiuKai-R-GBK" :size 20)))))
 
+  ;; 2. 专门为扩展区汉字设置字体（放在循环之后，确保覆盖掉上述 han 字符集对生僻字的接管）
+  (set-fontset-font t
+                    '(#x20000 . #x3FFFF)  ; 建议扩大范围：涵盖 Ext-B, C, D, E, F, G 等所有扩展区
+                    (font-spec :family "SimSun-ExtB" :size 20)
+                    nil
+                    'prepend))  ; 'prepend 告诉 Emacs 将此规则放在最前面，优先匹配
 (add-hook 'after-setting-font-hook #'my-cjk-font)
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
@@ -161,9 +168,9 @@
 
 (after! chatgpt-shell
   ;; (setq! chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")) ;; not working anymore!
-  (setq! chatgpt-shell-deepseek-key (getenv "DEEPSEEK_API_KEY"))
-  (setq! chatgpt-shell-google-key (getenv "GEMINI_API_KEY"))
-  ;; (setq! chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")) ;; not working anymore!
+  (setopt chatgpt-shell-deepseek-key (getenv "DEEPSEEK_API_KEY"))
+  (setopt chatgpt-shell-google-key (getenv "GEMINI_API_KEY"))
+  ;; (setopt chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")) ;; not working anymore!
   (require 'ob-chatgpt-shell)
   (ob-chatgpt-shell-setup)
   ;; (merge-list-to-list 'chatgpt-shell-model-versions
@@ -186,8 +193,8 @@
 (after! org
   (setq org-log-done t
         org-startup-folded t
-        org-ai-mode t
-        org-ai-global-mode t
+        ;; org-ai-mode t
+        ;; org-ai-global-mode t
         org-use-property-inheritance t
         org-confirm-babel-evaluate nil
         org-list-allow-alphabetical t
@@ -268,8 +275,8 @@
   (add-hook 'org-mode-hook (lambda ()
                              (org-superstar-mode 1)
                              (org-modern-mode -1)
-                             (org-ai-global-mode 1)
-                             (org-ai-mode 1)
+                             ;; (org-ai-global-mode 1)
+                             ;; (org-ai-mode 1)
                              (org-special-block-extras-mode 1)
                              ))
   (setq org-list-demote-modify-bullet
@@ -285,7 +292,7 @@
   (setq org-superstar-item-bullet-alist
         '((?* . ?➤)
           (?+ . ?✦)
-          (?- . ?✿)))
+          (?- . ?⚘)))
   (defface my-org-emphasis-bold
     '((default :inherit bold)
       (((class color) (min-colors 88) (background light))
@@ -400,7 +407,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ESS related customization
 (after! ess
-  (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
+  ;; (add-hook! 'prog-mode-hook #'rainbow-delimiters-mode)
   (add-hook! 'prog-mode-hook #'rainbow-mode)
 
   ;; combines https://github.com/fernandomayer/spacemacs/blob/master/private/ess/packages.el and
@@ -452,9 +459,9 @@
 
   ;; If I use LSP it is better to let LSP handle lintr. See example in
   ;; https://github.com/hlissner/doom-emacs/issues/2606.
-  (setq! ess-use-flymake nil)
-  (setq! lsp-ui-doc-enable nil
-         lsp-ui-doc-delay 1.5)
+  (setopt ess-use-flymake nil)
+  (setopt lsp-ui-doc-enable nil
+          lsp-ui-doc-delay 1.5)
 
   ;; Code indentation copied from my old config.
   ;; Follow Hadley Wickham's R style guide
@@ -557,7 +564,7 @@
 
 (after! elfeed
   :config
-  (setq! elfeed-curl-timeout 180)
+  (setopt elfeed-curl-timeout 180)
   (defun elfeed-goodies/search-header-draw ()
     "Returns the string to be used as the Elfeed header."
     (if (zerop (elfeed-db-last-update))
@@ -699,7 +706,7 @@
   ;; (add-hook! 'LaTeX-mode-hook 'LaTeX-math-mode)
   (define-key! LaTeX-mode-map "\\" #'TeX-insert-macro)
   (define-key! TeX-mode-map "\\" #'TeX-insert-macro)
-  (setq! LaTeX-math-abbrev-prefix "~")
+  (setopt LaTeX-math-abbrev-prefix "~")
 
   (defun mg-TeX-fold-brace ()
     "Hide the group in which point currently is located with \"{...}\"."
@@ -725,19 +732,19 @@
   )
 
 (after! which-key
-  (setq! which-key-use-C-h-commands t)
+  (setopt which-key-use-C-h-commands t)
   ;; (define-key! which-key-mode-map (kbd "C-x <f5>") 'which-key-C-h-dispatch)
-  ;; (setq! which-key-paging-prefixes '("C-x"))
-  ;; (setq! which-key-paging-key "<f5>")
+  ;; (setopt which-key-paging-prefixes '("C-x"))
+  ;; (setopt which-key-paging-key "<f5>")
   )
 
 ;; doesn't work!
 ;; (use-package! ess-view-data)
 
 (after! sdcv
-  (setq! sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
-  (setq! sdcv-dictionary-simple-list
-         '("21世纪英汉汉英双向词典"))
+  (setopt sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
+  (setopt sdcv-dictionary-simple-list
+          '("21世纪英汉汉英双向词典"))
   )
 
 (with-eval-after-load "liberime"
