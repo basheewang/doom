@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ll2
+# key: ll2
+# --
+library(ggplot2)
+library(dplyr)

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: or2
+# key: or2
+# --
+#+begin_src R :results output ${1:graphics file} :exports both value
+   $0
+#+end_src

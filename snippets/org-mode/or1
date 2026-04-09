@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: or1
+# key: or1
+# --
+#+header: :width 500 :height 500
+#+begin_src R :file ./img/rdv/rdv_${1:}.png :results output graphics file :exports both value
+   $0
+#+end_src

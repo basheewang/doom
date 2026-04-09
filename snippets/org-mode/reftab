@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: reftab
+# key: reftab
+# --
+| Author | Edition | Year | Title |
+|--------+---------+------+-------|
+| $0       |         |      |       |

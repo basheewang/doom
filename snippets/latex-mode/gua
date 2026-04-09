@@ -1,0 +1,37 @@
+# -*- mode: snippet -*-
+# name: gua
+# key: gua
+# --
+\\pdfbookmark[1]{${1:}}{$1}
+\\begin{table}[ht]
+	\\begin{center}
+		\\begin{tabular}[c]{c|c|>{\\fzkt\\small\\arraybackslash}m{6.3cm}}
+			\\multicolumn{2}{l}{【${2:一}】 {\\fzkt\\huge $1}}                                  & \\multicolumn{1}{l}{${3:乾乾} (${4:111111})}                          \\\\
+			\\toprule
+			\\multicolumn{3}{l}{\\fzbyks\\parbox{10cm}{${5:乾：元亨。利貞。}}}                                                                                               \\\\
+			\\toprule
+			卦象                                                                      & 爻位                              & \\multicolumn{1}{c}{經文} \\\\
+			\\toprule
+			\\multirow{6}{*}{\\hanaa\\fontsize{48pt}{72pt}\\selectfont \\vspace*{-1em}$0} & ${6:初九}                              & ${7:潛龍勿用。}                  \\\\
+			\\cmidrule{2-3}
+			                                                                        & ${8:九二}                              & ${9:見龍在田，利見大人。}             \\\\
+			\\cmidrule{2-3}
+			                                                                        & ${10:九三}                              & ${11:君子終日乾乾，夕惕若；厲，无咎。}       \\\\
+			\\cmidrule{2-3}
+			                                                                        & ${12:九四}                              & ${13:或躍在淵，无咎。}               \\\\
+			\\cmidrule{2-3}
+			                                                                        & ${14:九五}                              & ${15:飛龍在天，利見大人。}             \\\\
+			\\cmidrule{2-3}
+			                                                                        & ${16:上九}                              & ${17:亢龍，有悔。}                 \\\\
+			\\toprule
+			\\multicolumn{3}{l}{\\fzbyks\\parbox{10cm}{${18:用九：見羣龍无首，吉。}}}                                                                                            \\\\
+			\\bottomrule
+		\\end{tabular}
+	\\end{center}
+\\end{table}
+\\begin{description}
+	\\item[彖曰] {\\fzkt\\small ${19:}}
+	\\item[象曰] {\\fzkt\\small ${20:}}
+	\\item[文言曰] {\\fzkt\\small ${21:}}
+\\end{description}
+\\newpage
