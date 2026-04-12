@@ -1,0 +1,114 @@
+# -*- mode: snippet -*-
+# name: mytemplate
+# key: mytemplate
+# --
+\documentclass[UTF8, scheme=chinese]{$1}
+
+% \usepackage{pdflscape}% 引入横向排版宏包
+${2:%}\usepackage[margin=0.5cm]{geometry}
+
+\usepackage{xeCJK}
+\xeCJKsetup{
+  AutoFallBack = true,
+  AutoFakeBold = true,
+  PunctStyle = kaiming,
+  CheckFullRight = true,
+  CheckSingle = false,
+  AllowBreakBetweenPuncts = true,
+  CJKmath = true,
+}
+
+% 完整的中文章节格式设置
+\ctexset{
+    % 章设置
+    % chapter = {
+    %     format = \huge\bfseries\centering,
+    %     nameformat = {},
+    %     titleformat = {},
+    %     name = {第,章},
+    %     number = \chinese{chapter},
+    %     aftername = \quad,
+    %     beforeskip = 20pt,
+    %     afterskip = 20pt,
+    % },
+    % 节设置
+    section = {
+        format = \Large\bfseries,
+        nameformat = {},
+        titleformat = {},
+        name = {第,节},
+        number = \chinese{section},
+        aftername = \quad,
+    },
+    % 小节设置
+    subsection = {
+        format = \large\bfseries,
+        nameformat = {},
+        titleformat = {},
+        name = {第,小节},
+        number = \chinese{subsection},
+        aftername = \quad,
+    },
+    % 子小节设置
+    subsubsection = {
+        format = \normalsize\bfseries,
+        nameformat = {},
+        titleformat = {},
+        name = {第,子小节},
+        number = \chinese{subsubsection},
+        aftername = \quad,
+    }
+}
+
+\xeCJKDeclareSubCJKBlock{Ext-A}{ "3400 -> "4DB5 }
+\xeCJKDeclareSubCJKBlock{Ext-B}{ "20000 -> "2A6DF }
+\xeCJKDeclareSubCJKBlock{CircNum}{ "2460 -> "2473 }
+
+\setCJKmainfont[%
+BoldFont={FZYouHei_GBK 513B},   %
+% Ext-A={仓耳今楷05-W04},
+Ext-B={SimSun-ExtB},
+CircNum={IosevkaTerm NFM}]
+{NSimSun}
+\newCJKfontfamily[li]\hmls{FZZJ-HMLSJF}
+\newCJKfontfamily[kai]\fzxk{FZNewKai-Z03}
+\newCJKfontfamily[song]\ssb{SimSun-ExtB}
+
+\usepackage{xcolor}
+\usepackage{pifont}
+
+\usepackage{tikz}
+
+
+% 引入颜色宏包（可选，用于让中文标注颜色变浅一点）
+\usepackage{xpinyin}
+
+% 记得将asmmath放在前面
+\usepackage{amsmath}
+% \usepackage{mathabx}
+% \usepackage{fdsymbol}
+
+% 更多功能的itemize以及表格
+\usepackage{enumitem}
+\usepackage{tabularray}
+\UseTblrLibrary{varwidth}
+
+\title{\fzxk {\huge $2}}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+This is a test. $E=mc^2$
+
+这是一个测试。
+$0
+% \input{contents/part000}
+
+\end{document}
+
+% Local Variables:
+% TeX-engine: xetex
+% TeX-master: t
+% End:

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: xbg
+# key: xbg
+# --
+\begin{center}
+  \begin{talltblr}[
+    label = none, % Removes the "Table X:" text
+    ]{
+    vlines, hlines,
+    row{1}={font=\large\bfseries, bg=azure9},
+    rows={halign=c, valign=m},
+    columns={halign=c, valign=m}
+    }
+    $0
+  \end{talltblr}
+\end{center}

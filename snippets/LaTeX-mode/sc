@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sc
+# key: sc
+# --
+\SetCell[${1:c}=${2:3}]{${3:c}}$0

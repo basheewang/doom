@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: h_f
+# key: h_f
+# --
+%% -*- coding: utf-8 -*-
+
+$0
+
+%%% Local Variables:
+%%% TeX-engine: xetex
+%%% End:
