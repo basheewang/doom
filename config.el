@@ -483,7 +483,7 @@
           (ess-fl-keyword:fun-calls    . t)
           (ess-fl-keyword:numbers      . t)
           (ess-fl-keyword:operators    . t)
-          (ess-fl-keyword:delimiters) ; don't because of rainbow delimiters
+          ;; (ess-fl-keyword:delimiters) ; don't because of rainbow delimiters
           (ess-fl-keyword:=            . t)
           (ess-R-fl-keyword:F&T        . t)
           (ess-R-fl-keyword:%op%       . t)))
@@ -905,3 +905,10 @@
          (text-mode . stripspace-local-mode)
          (conf-mode . stripspace-local-mode)
          (org-mode . stripspace-local-mode)))
+
+;; (use-package! flycheck
+;;   :custom
+;;   (flycheck-disable-excessive-checker '(org-lint)))
+
+(with-eval-after-load 'flycheck
+  (put 'org-lint 'flycheck-disabled t))

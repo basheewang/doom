@@ -7,9 +7,15 @@
     label = none, % Removes the "Table X:" text
     ]{
     vlines, hlines,
-    row{1}={font=\large\bfseries, bg=azure9},
+    % 加入支持列表环境的测量参数 (记得在导言区加载 \UseTblrLibrary{varwidth})
+    ${1:%} measure=vbox, stretch=-1,
     rows={halign=c, valign=m},
-    columns={halign=c, valign=m}
+    columns={halign=c, valign=m},
+    % column{1}={0.15\linewidth, halign=c, bg=azure9},
+    % column{2}={0.35\linewidth, halign=l},
+    % column{3}={0.35\linewidth, halign=l},
+    % column{4}={0.35\linewidth, halign=l},
+    row{1}={font=\large\bfseries, bg=azure9, halign=c}
     }
     $0
   \end{talltblr}

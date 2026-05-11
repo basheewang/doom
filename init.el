@@ -156,7 +156,7 @@
        ;;ocaml             ; an objective camel
        (org
         +pretty
-        +roam
+        ;; +roam
         +pandoc
         +gnuplot
         +dragndrop)               ; organize your plain life in plain text

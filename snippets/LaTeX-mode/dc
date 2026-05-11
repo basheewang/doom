@@ -1,6 +1,6 @@
 # key: dc
 # name: dc
 # --
-\markword[\mbox]{{\Large\textcolor{red}{\\( \lgroup \\)}}}{\textcolor{red}{定从(${1:})开始}}
+\markword[\mbox]{{\Large\textcolor{red}{\\( \lgroup \\)}}}{\textcolor{red}{定从${2}(${1})}}
 $0
-\markword[\mbox]{{\Large\textcolor{red}{\\( \rgroup \\)}}}{\textcolor{red}{定从结束}}
+\markword[\mbox]{{\Large\textcolor{red}{\\( \rgroup \\)}}}{\textcolor{red}{定从${2}}}

@@ -50,8 +50,8 @@
 ;; (unpin! t)
 
 ;; (unpin! straight)
-(unpin! org)
-(unpin! diff-hl)
+;; (unpin! org)
+;; (unpin! diff-hl)
 ;; (unpin! with-editor)
 ;; (unpin! tablist)
 ;; (unpin! transient)

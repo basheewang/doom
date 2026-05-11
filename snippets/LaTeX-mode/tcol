@@ -1,0 +1,9 @@
+# key: tcol
+# name: tcol
+# --
+\begin{multicols}{${1:2}}
+  \setlength{\columnseprule}{${2:0.4}pt}
+  \begin{description}[style=unboxed]% [nosep]
+  $0
+  \end{description}
+\end{multicols}

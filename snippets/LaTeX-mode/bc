@@ -1,6 +1,6 @@
 # key: bc
 # name: bc
 # --
-\markword[\mbox]{\large\textcolor{blue}{\\(\lgroup\\)}}{\textcolor{blue}{宾从开始}}
+\markword[\mbox]{\large\textcolor{blue}{\\(\lgroup\\)}}{\textcolor{blue}{宾从${1}}}
 $0
-\markword[\mbox]{\large\textcolor{blue}{\\(\rgroup\\)}}{\textcolor{blue}{宾从结束}}
+\markword[\mbox]{\large\textcolor{blue}{\\(\rgroup\\)}}{\textcolor{blue}{宾从${1}}}
