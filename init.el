@@ -16,7 +16,7 @@
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
-       (chinese +childframe) ;; +rime)
+       (chinese +childframe)
        ;;japanese
        ;;layout            ; auie,ctsrnm is the superior home row
 
@@ -192,7 +192,7 @@
        ;;emms
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
-       (rss +org)                 ; emacs as an RSS reader
+       ;; (rss +org)                 ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config

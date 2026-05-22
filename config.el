@@ -192,11 +192,213 @@
 ;; (use-package! company-box
 ;;   :hook (company-mode . company-box-mode))
 
+;; org mode settings
+;; (after! org
+;;   (setq org-log-done t
+;;         org-startup-folded t
+;;         ;; org-ai-mode t
+;;         ;; org-ai-global-mode t
+;;         org-use-property-inheritance t
+;;         org-confirm-babel-evaluate nil
+;;         org-list-allow-alphabetical t
+;;         org-export-with-sub-superscripts nil
+;;         org-export-headline-levels 5
+;;         org-export-use-babel t
+;;         org-use-speed-commands t
+;;         org-return-follows-link t
+;;         org-hide-emphasis-markers t
+;;         org-special-ctrl-a/e t
+;;         org-special-ctrl-k t
+;;         org-src-preserve-indentation nil
+;;         org-src-tab-acts-natively t
+;;         org-src-content-indentation 0
+;;         org-export-in-background nil
+;;         org-fontify-quote-and-verse-blocks t
+;;         org-fontify-whole-heading-line t
+;;         org-fontify-done-headline t
+;;         org-support-shift-select t      ; Enable shift selection.
+;;         org-fold-catch-invisible-edits 'smart)
+;;   (setq org-ellipsis " ▾ "
+;;         org-hide-leading-stars t
+;;         org-priority-highest ?A
+;;         org-priority-lowest ?E
+;;         org-priority-faces
+;;         '((?A . 'all-the-icons-red)
+;;           (?B . 'all-the-icons-orange)
+;;           (?C . 'all-the-icons-yellow)
+;;           (?D . 'all-the-icons-green)
+;;           (?E . 'all-the-icons-blue)))
+;;   (setq-default prettify-symbols-alist
+;;                 '(("#+title:" . "✍")
+;;                   ("#+author:" . "👨")
+;;                   ;; ("#+caption:" . "☰")
+;;                   ("#+RESULTS:" . "🎁")
+;;                   ("#+header:" . "󱍞")
+;;                   ;; ("#+attr_latex:" . "🍄")
+;;                   ;; ("#+attr_org:" . "🔔")
+;;                   ;; ("#+date:" . "⚓")
+;;                   ;; ("#+property:" . "☸")
+;;                   ("#+OPTIONS:" . "⌥")
+;;                   ("#+options:" . "⌥")
+;;                   ("$+name:" . "㊔")
+;;                   (":PROPERTIES:" . "⚙")
+;;                   (":file" . "")
+;;                   (":results" . "")
+;;                   (":exports" . "󰮓")
+;;                   ;; (":END:" . ".")
+;;                   ;; ("[ ]" . "󰄮")
+;;                   ;; ("[X]" . "")
+;;                   ;; ("\\pagebreak" . 128204)
+;;                   ;; ("#+begin_quote" . "❮")
+;;                   ;; ("#+end_quote" . "❯")
+;;                   ;; ("#+BEGIN_Highlight" . "📖")
+;;                   ;; ("#+END_Highlight" . "📜")
+;;                   ("#+begin_src" . "⏩")
+;;                   ("#+end_src" . "⏪")))
+;;   (org-babel-do-load-languages
+;;    'org-babel-load-languages
+;;    '((gnuplot . t)
+;;      (latex . t)
+;;      (asymptote . t)
+;;      (R . t)
+;;      (org . t)
+;;      (js . t)
+;;      (emacs-lisp . t)
+;;      (calc . t)
+;;      ;; (ruby . t)
+;;      )
+;;    )
+;;   (defun my-insert-and-move ()
+;;     (interactive)
+;;     (insert " $$ ")
+;;     (backward-char 2))
+;;   (add-hook 'org-mode-hook
+;;             (lambda ()
+;;               (local-set-key (kbd "$") 'my-insert-and-move)))
+;;   (add-hook 'org-mode-hook (lambda ()
+;;                              (org-superstar-mode 1)
+;;                              (org-modern-mode -1)
+;;                              ;; (org-ai-global-mode 1)
+;;                              ;; (org-ai-mode 1)
+;;                              (org-special-block-extras-mode 1)
+;;                              ))
+;;   (setq org-list-demote-modify-bullet
+;;         (quote (("+" . "-")
+;;                 ("-" . "+")
+;;                 ("*" . "-")
+;;                 ("1." . "1)")
+;;                 ("1)" . "A.")
+;;                 ("A." . "a)")
+;;                 ("a)" . "a.")
+;;                 ("a." . "*")
+;;                 ("b." . "*"))))
+;;   (setq org-superstar-item-bullet-alist
+;;         '((?* . ?➤)
+;;           (?+ . ?✦)
+;;           (?- . ?⚘)))
+;;   (defface my-org-emphasis-bold
+;;     '((default :inherit bold)
+;;       (((class color) (min-colors 88) (background light))
+;;        :foreground "#a60000")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :foreground "#ff8059"))
+;;     "My bold emphasis for Org.")
+
+;;   (defface my-org-emphasis-bold-1
+;;     '((default :inherit bold)
+;;       (((class color) (min-colors 88) (background light))
+;;        :foreground "#a60000")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :background "#f00059"))
+;;     "My bold emphasis for Org.")
+
+;;   (defface my-org-emphasis-italic
+;;     '((default :inherit italic)
+;;       (((class color) (min-colors 88) (background light))
+;;        :foreground "#005e00")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :foreground "#44bc44"))
+;;     "My italic emphasis for Org.")
+
+;;   (defface my-org-emphasis-underline
+;;     '((default :inherit underline)
+;;       (((class color) (min-colors 88) (background light))
+;;        :foreground "#813e00")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :foreground "#d0bc00"))
+;;     "My underline emphasis for Org.")
+
+;;   (defface my-org-emphasis-strike-through
+;;     '((((class color) (min-colors 88) (background light))
+;;        :strike-through "#972500" :foreground "#505050")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :strike-through "#ef2b50" :foreground "#a8a8a8"))
+;;     "My strike-through emphasis for Org.")
+
+;;   (setq org-emphasis-alist
+;;         '(("*" my-org-emphasis-bold-1)
+;;           ("/" my-org-emphasis-italic)
+;;           ("_" my-org-emphasis-underline)
+;;           ("=" org-verbatim verbatim)
+;;           ("~" org-code verbatim)
+;;           ("+" my-org-emphasis-strike-through)))
+
+;;   (require 'org-extra-emphasis)
+
+;;   ;; (custom-set-variables
+;;   ;;  '(org-extra-emphasis-alist
+;;   ;;    '(("<kbd>" org-extra-emphasis-01)
+;;   ;;      ))
+;;   ;;  '(org-hide-emphasis-markers t))
+
+;;   ;; (custom-set-faces
+;;   ;;  '(org-extra-emphasis-01
+;;   ;;    ((t (:background "yellow"
+;;   ;;         :foreground "black"
+;;   ;;         :box (:line-width (1 . 1)
+;;   ;;               :color "red"
+;;   ;;               :style None)
+;;   ;;         )))))
+
+;;   (setq org-src-block-faces
+;;         '(
+;;           ("emacs-lisp" (:background "#11526F"))
+;;           ("python" (:background "#E5FFB8"))
+;;           ))
+
+;;   (progn
+;;     (setq org-src-lang-modes
+;;           (append org-src-lang-modes
+;;                   '(
+;;                     ("R" . ess-r)
+;;                     ("js" . js2)
+;;                     ))))
+
+;;   (require 'org-tempo)
+;;   (add-to-list 'org-structure-template-alist
+;;                '("d" . "details Hint"))
+;;   (add-to-list 'org-structure-template-alist
+;;                '("b" . "box"))
+
+;;   ;; (add-to-list 'company-backends 'company-capf)
+;;   (add-hook 'org-mode-hook
+;;             (lambda ()
+;;               (add-hook 'after-save-hook 'org-babel-tangle nil 'make-it-local)))
+
+;;   (require 'org-download)
+;;   ;; Drag-and-drop to `dired`
+;;   ;; If you have the image stored in the clipboard, use org-download-clipboard.
+;;   (add-hook 'dired-mode-hook 'org-download-enable)
+;;   (add-hook 'org-mode-hook 'rainbow-mode)
+
+;;   ;; (require 'ob-chatgpt-shell)
+;;   ;; (ob-chatgpt-shell-setup)
+;;   )
+
+;;   org mode setup optimize
 (after! org
   (setq org-log-done t
         org-startup-folded t
-        ;; org-ai-mode t
-        ;; org-ai-global-mode t
         org-use-property-inheritance t
         org-confirm-babel-evaluate nil
         org-list-allow-alphabetical t
@@ -210,14 +412,14 @@
         org-special-ctrl-k t
         org-src-preserve-indentation nil
         org-src-tab-acts-natively t
-        org-edit-src-content-indentation 0
+        org-src-content-indentation 0
         org-export-in-background nil
         org-fontify-quote-and-verse-blocks t
         org-fontify-whole-heading-line t
         org-fontify-done-headline t
-        org-support-shift-select t      ; Enable shift selection.
-        org-fold-catch-invisible-edits 'smart)
-  (setq org-ellipsis " ▾ "
+        org-support-shift-select t
+        org-fold-catch-invisible-edits 'smart
+        org-ellipsis " ▾ "
         org-hide-leading-stars t
         org-priority-highest ?A
         org-priority-lowest ?E
@@ -227,16 +429,13 @@
           (?C . 'all-the-icons-yellow)
           (?D . 'all-the-icons-green)
           (?E . 'all-the-icons-blue)))
+
+  ;; 1. 现代优化：在 Doom / Emacs 30 中建议直接将 prettify 注入 hook
   (setq-default prettify-symbols-alist
                 '(("#+title:" . "✍")
                   ("#+author:" . "👨")
-                  ;; ("#+caption:" . "☰")
                   ("#+RESULTS:" . "🎁")
                   ("#+header:" . "󱍞")
-                  ;; ("#+attr_latex:" . "🍄")
-                  ;; ("#+attr_org:" . "🔔")
-                  ;; ("#+date:" . "⚓")
-                  ;; ("#+property:" . "☸")
                   ("#+OPTIONS:" . "⌥")
                   ("#+options:" . "⌥")
                   ("$+name:" . "㊔")
@@ -244,16 +443,10 @@
                   (":file" . "")
                   (":results" . "")
                   (":exports" . "󰮓")
-                  ;; (":END:" . ".")
-                  ;; ("[ ]" . "󰄮")
-                  ;; ("[X]" . "")
-                  ;; ("\\pagebreak" . 128204)
-                  ;; ("#+begin_quote" . "❮")
-                  ;; ("#+end_quote" . "❯")
-                  ;; ("#+BEGIN_Highlight" . "📖")
-                  ;; ("#+END_Highlight" . "📜")
                   ("#+begin_src" . "⏩")
                   ("#+end_src" . "⏪")))
+
+  ;; 2. 健壮性：延迟或按需加载 languages
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((gnuplot . t)
@@ -263,136 +456,119 @@
      (org . t)
      (js . t)
      (emacs-lisp . t)
-     (calc . t)
-     ;; (ruby . t)
-     )
-   )
+     (calc . t)))
+
+  ;; 3. 规范化：移除匿名 lambda 钩子，避免由于多此重复加载配置导致内存泄漏/按键重复
+  (defun my-org-mode-setup-bindings-h ()
+    "Setup local keybindings for org-mode."
+    (local-set-key (kbd "$") #'my-insert-and-move))
+
   (defun my-insert-and-move ()
+    "Insert ' $$ ' and step inside."
     (interactive)
     (insert " $$ ")
     (backward-char 2))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (local-set-key (kbd "$") 'my-insert-and-move)))
-  (add-hook 'org-mode-hook (lambda ()
-                             (org-superstar-mode 1)
-                             (org-modern-mode -1)
-                             ;; (org-ai-global-mode 1)
-                             ;; (org-ai-mode 1)
-                             (org-special-block-extras-mode 1)
-                             ))
+
+  (add-hook 'org-mode-hook #'my-org-mode-setup-bindings-h)
+
+  (defun my-org-mode-plugins-h ()
+    "Enable/Disable required minor modes for org."
+    (org-superstar-mode 1)
+    (org-modern-mode -1)
+    (org-special-block-extras-mode 1)
+    (rainbow-mode 1))
+
+  (add-hook 'org-mode-hook #'my-org-mode-plugins-h)
+
   (setq org-list-demote-modify-bullet
-        (quote (("+" . "-")
-                ("-" . "+")
-                ("*" . "-")
-                ("1." . "1)")
-                ("1)" . "A.")
-                ("A." . "a)")
-                ("a)" . "a.")
-                ("a." . "*")
-                ("b." . "*"))))
+        '(("+" . "-")
+          ("-" . "+")
+          ("*" . "-")
+          ("1." . "1)")
+          ("1)" . "A.")
+          ("A." . "a)")
+          ("a)" . "a.")
+          ("a." . "*")
+          ("b." . "*")))
+
   (setq org-superstar-item-bullet-alist
         '((?* . ?➤)
           (?+ . ?✦)
           (?- . ?⚘)))
+
+  ;; 4. 修复 Flycheck 报错：添加 :group 'org-faces 属性
   (defface my-org-emphasis-bold
     '((default :inherit bold)
-      (((class color) (min-colors 88) (background light))
-       :foreground "#a60000")
-      (((class color) (min-colors 88) (background dark))
-       :foreground "#ff8059"))
-    "My bold emphasis for Org.")
+      (((class color) (min-colors 88) (background light)) :foreground "#a60000")
+      (((class color) (min-colors 88) (background dark))  :foreground "#ff8059"))
+    "My bold emphasis for Org."
+    :group 'org-faces)
 
   (defface my-org-emphasis-bold-1
     '((default :inherit bold)
-      (((class color) (min-colors 88) (background light))
-       :foreground "#a60000")
-      (((class color) (min-colors 88) (background dark))
-       :background "#f00059"))
-    "My bold emphasis for Org.")
+      (((class color) (min-colors 88) (background light)) :foreground "#a60000")
+      (((class color) (min-colors 88) (background dark))  :background "#f00059"))
+    "My bold emphasis for Org-1."
+    :group 'org-faces)
 
   (defface my-org-emphasis-italic
     '((default :inherit italic)
-      (((class color) (min-colors 88) (background light))
-       :foreground "#005e00")
-      (((class color) (min-colors 88) (background dark))
-       :foreground "#44bc44"))
-    "My italic emphasis for Org.")
+      (((class color) (min-colors 88) (background light)) :foreground "#005e00")
+      (((class color) (min-colors 88) (background dark))  :foreground "#44bc44"))
+    "My italic emphasis for Org."
+    :group 'org-faces)
 
   (defface my-org-emphasis-underline
     '((default :inherit underline)
-      (((class color) (min-colors 88) (background light))
-       :foreground "#813e00")
-      (((class color) (min-colors 88) (background dark))
-       :foreground "#d0bc00"))
-    "My underline emphasis for Org.")
+      (((class color) (min-colors 88) (background light)) :foreground "#813e00")
+      (((class color) (min-colors 88) (background dark))  :foreground "#d0bc00"))
+    "My underline emphasis for Org."
+    :group 'org-faces)
 
   (defface my-org-emphasis-strike-through
-    '((((class color) (min-colors 88) (background light))
-       :strike-through "#972500" :foreground "#505050")
-      (((class color) (min-colors 88) (background dark))
-       :strike-through "#ef2b50" :foreground "#a8a8a8"))
-    "My strike-through emphasis for Org.")
+    '((((class color) (min-colors 88) (background light)) :strike-through "#972500" :foreground "#505050")
+      (((class color) (min-colors 88) (background dark))  :strike-through "#ef2b50" :foreground "#a8a8a8"))
+    "My strike-through emphasis for Org."
+    :group 'org-faces)
 
   (setq org-emphasis-alist
         '(("*" my-org-emphasis-bold-1)
+          ;; 密级标记
           ("/" my-org-emphasis-italic)
           ("_" my-org-emphasis-underline)
           ("=" org-verbatim verbatim)
           ("~" org-code verbatim)
           ("+" my-org-emphasis-strike-through)))
 
-  (require 'org-extra-emphasis)
-
-  ;; (custom-set-variables
-  ;;  '(org-extra-emphasis-alist
-  ;;    '(("<kbd>" org-extra-emphasis-01)
-  ;;      ))
-  ;;  '(org-hide-emphasis-markers t))
-
-  ;; (custom-set-faces
-  ;;  '(org-extra-emphasis-01
-  ;;    ((t (:background "yellow"
-  ;;         :foreground "black"
-  ;;         :box (:line-width (1 . 1)
-  ;;               :color "red"
-  ;;               :style None)
-  ;;         )))))
+  ;; 5. 健壮性：使用 Doom 推荐的内置 feature 结构进行扩展模块防爆加载
+  (after! org-extra-emphasis
+    ;; 如果需要覆盖变量，在对应包加载后进行
+    )
 
   (setq org-src-block-faces
-        '(
-          ("emacs-lisp" (:background "#11526F"))
-          ("python" (:background "#E5FFB8"))
-          ))
+        '(("emacs-lisp" (:background "#11526F"))
+          ("python" (:background "#E5FFB8"))))
 
-  (progn
-    (setq org-src-lang-modes
-          (append org-src-lang-modes
-                  '(
-                    ("R" . ess-r)
-                    ("js" . js2)
-                    ))))
+  ;; 6. 性能：放弃（容易导致重复 append 的）append，直接覆盖或用 add-to-list
+  (setq org-src-lang-modes
+        (append org-src-lang-modes
+                '(("R" . ess-r)
+                  ("js" . js2))))
 
   (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist
-               '("d" . "details Hint"))
-  (add-to-list 'org-structure-template-alist
-               '("b" . "box"))
+  (add-to-list 'org-structure-template-alist '("d" . "details Hint"))
+  (add-to-list 'org-structure-template-alist '("b" . "box"))
 
-  ;; (add-to-list 'company-backends 'company-capf)
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook 'org-babel-tangle nil 'make-it-local)))
+  ;; 7. 规范化：将自动纠缠、多模式使能等逻辑绑定到解耦的 Hook 函数中
+  (defun my-org-mode-save-hook-setup-h ()
+    "Setup buffer local after-save-hook for babel tangling."
+    (add-hook 'after-save-hook #'org-babel-tangle nil 'local))
 
-  (require 'org-download)
-  ;; Drag-and-drop to `dired`
-  ;; If you have the image stored in the clipboard, use org-download-clipboard.
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  (add-hook 'org-mode-hook 'rainbow-mode)
+  (add-hook 'org-mode-hook #'my-org-mode-save-hook-setup-h)
 
-  ;; (require 'ob-chatgpt-shell)
-  ;; (ob-chatgpt-shell-setup)
-  )
+  (with-eval-after-load 'dired
+    (require 'org-download)
+    (add-hook 'dired-mode-hook #'org-download-enable)))
 
 ;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
 ;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
@@ -410,6 +586,11 @@
 ;;   (liberime-try-select-schema "luna_pinyin_simp")
 ;;   (setq pyim-default-scheme 'rime-quanpin))
 
+(use-package! rime
+  :custom
+  (default-input-method "rime")
+  :config
+  (setq rime-user-data-dir "~/.config/emacs/.local/cache/rime/"))
 
 ;; ----------------------------------------------------------------------------
 ;; ESS related customization
@@ -569,156 +750,212 @@
                     'font-lock-face 'font-lock-keyword-face))
   )
 
-(after! elfeed
-  :config
-  (setopt elfeed-curl-timeout 180)
-  (defun elfeed-goodies/search-header-draw ()
-    "Returns the string to be used as the Elfeed header."
-    (if (zerop (elfeed-db-last-update))
-        (elfeed-search--intro-header)
-      (let* ((separator-left (intern (format "powerline-%s-%s"
-                                             elfeed-goodies/powerline-default-separator
-                                             (car powerline-default-separator-dir))))
-             (separator-right (intern (format "powerline-%s-%s"
-                                              elfeed-goodies/powerline-default-separator
-                                              (cdr powerline-default-separator-dir))))
-             (db-time (seconds-to-time (elfeed-db-last-update)))
-             (stats (-elfeed/feed-stats))
-             (search-filter (cond
-                             (elfeed-search-filter-active
-                              "")
-                             (elfeed-search-filter
-                              elfeed-search-filter)
-                             (""))))
-        (if (>= (window-width) (* (frame-width) elfeed-goodies/wide-threshold))
-            (search-header/draw-wide separator-left separator-right search-filter stats db-time)
-          (search-header/draw-tight separator-left separator-right search-filter stats db-time)))))
+;; (after! elfeed
+;;   :config
+;;   (setopt elfeed-curl-timeout 180)
+;;   (defun elfeed-goodies/search-header-draw ()
+;;     "Returns the string to be used as the Elfeed header."
+;;     (if (zerop (elfeed-db-last-update))
+;;         (elfeed-search--intro-header)
+;;       (let* ((separator-left (intern (format "powerline-%s-%s"
+;;                                              elfeed-goodies/powerline-default-separator
+;;                                              (car powerline-default-separator-dir))))
+;;              (separator-right (intern (format "powerline-%s-%s"
+;;                                               elfeed-goodies/powerline-default-separator
+;;                                               (cdr powerline-default-separator-dir))))
+;;              (db-time (seconds-to-time (elfeed-db-last-update)))
+;;              (stats (-elfeed/feed-stats))
+;;              (search-filter (cond
+;;                              (elfeed-search-filter-active
+;;                               "")
+;;                              (elfeed-search-filter
+;;                               elfeed-search-filter)
+;;                              (""))))
+;;         (if (>= (window-width) (* (frame-width) elfeed-goodies/wide-threshold))
+;;             (search-header/draw-wide separator-left separator-right search-filter stats db-time)
+;;           (search-header/draw-tight separator-left separator-right search-filter stats db-time)))))
 
-  (defun elfeed-goodies/entry-line-draw (entry)
-    "Print ENTRY to the buffer."
+;;   (defun elfeed-goodies/entry-line-draw (entry)
+;;     "Print ENTRY to the buffer."
 
-    (let* ((title (or (elfeed-meta entry :title) (elfeed-entry-title entry) ""))
-           (date (elfeed-search-format-date (elfeed-entry-date entry)))
-           (author (plist-get (nth 0 (elfeed-meta entry :authors)) :name))
-           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
-           (feed (elfeed-entry-feed entry))
-           (feed-title
-            (when feed
-              (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
-           (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
-           (tags-str (concat "[" (mapconcat 'identity tags ",") "]"))
-           (title-width (- (window-width) elfeed-goodies/feed-source-column-width
-                           elfeed-goodies/tag-column-width 4))
-           (author-column (elfeed-format-column
-                           author (elfeed-clamp (length author)
-                                                elfeed-goodies/feed-source-column-width
-                                                elfeed-goodies/feed-source-column-width)
-                           :left))
-           (title-column (elfeed-format-column
-                          title (elfeed-clamp
-                                 elfeed-search-title-min-width
-                                 title-width
-                                 title-width)
-                          :left))
-           (tag-column (elfeed-format-column
-                        tags-str (elfeed-clamp (length tags-str)
-                                               elfeed-goodies/tag-column-width
-                                               elfeed-goodies/tag-column-width)
-                        :left))
-           (feed-column (elfeed-format-column
-                         feed-title (elfeed-clamp elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width)
-                         :left)))
+;;     (let* ((title (or (elfeed-meta entry :title) (elfeed-entry-title entry) ""))
+;;            (date (elfeed-search-format-date (elfeed-entry-date entry)))
+;;            (author (plist-get (nth 0 (elfeed-meta entry :authors)) :name))
+;;            (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
+;;            (feed (elfeed-entry-feed entry))
+;;            (feed-title
+;;             (when feed
+;;               (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
+;;            (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
+;;            (tags-str (concat "[" (mapconcat 'identity tags ",") "]"))
+;;            (title-width (- (window-width) elfeed-goodies/feed-source-column-width
+;;                            elfeed-goodies/tag-column-width 4))
+;;            (author-column (elfeed-format-column
+;;                            author (elfeed-clamp (length author)
+;;                                                 elfeed-goodies/feed-source-column-width
+;;                                                 elfeed-goodies/feed-source-column-width)
+;;                            :left))
+;;            (title-column (elfeed-format-column
+;;                           title (elfeed-clamp
+;;                                  elfeed-search-title-min-width
+;;                                  title-width
+;;                                  title-width)
+;;                           :left))
+;;            (tag-column (elfeed-format-column
+;;                         tags-str (elfeed-clamp (length tags-str)
+;;                                                elfeed-goodies/tag-column-width
+;;                                                elfeed-goodies/tag-column-width)
+;;                         :left))
+;;            (feed-column (elfeed-format-column
+;;                          feed-title (elfeed-clamp elfeed-goodies/feed-source-column-width
+;;                                                   elfeed-goodies/feed-source-column-width
+;;                                                   elfeed-goodies/feed-source-column-width)
+;;                          :left)))
 
-      (if (>= (window-width) (* (frame-width) elfeed-goodies/wide-threshold))
-          (progn
-            (insert (propertize date 'face 'elfeed-search-date-face) " ")
-            (insert (propertize feed-column 'face 'elfeed-search-feed-face) " ")
-            (insert (propertize tag-column 'face 'elfeed-search-tag-face) " ")
-            (insert (propertize author-column 'face 'elfeed-search-author-face) " ")
-            (insert (propertize title 'face title-faces 'kbd-help title)))
-        (insert (propertize title 'face title-faces 'kbd-help title)))))
+;;       (if (>= (window-width) (* (frame-width) elfeed-goodies/wide-threshold))
+;;           (progn
+;;             (insert (propertize date 'face 'elfeed-search-date-face) " ")
+;;             (insert (propertize feed-column 'face 'elfeed-search-feed-face) " ")
+;;             (insert (propertize tag-column 'face 'elfeed-search-tag-face) " ")
+;;             (insert (propertize author-column 'face 'elfeed-search-author-face) " ")
+;;             (insert (propertize title 'face title-faces 'kbd-help title)))
+;;         (insert (propertize title 'face title-faces 'kbd-help title)))))
 
-  ;; to sort by title.
-  ;; (setq elfeed-search-sort-function
-  ;;       (lambda (a b)
-  ;;         (string> (downcase (elfeed-entry-title a))
-  ;;                  (downcase (elfeed-entry-title b)))))
+;;   ;; to sort by title.
+;;   ;; (setq elfeed-search-sort-function
+;;   ;;       (lambda (a b)
+;;   ;;         (string> (downcase (elfeed-entry-title a))
+;;   ;;                  (downcase (elfeed-entry-title b)))))
 
-  ;; A flag to indicate the current sort mode.
-  (defvar my/elfeed-sort-by-title-p nil
-    "Non-nil if Elfeed search results are currently sorted by title.")
+;;   ;; A flag to indicate the current sort mode.
+;;   (defvar my/elfeed-sort-by-title-p nil
+;;     "Non-nil if Elfeed search results are currently sorted by title.")
 
-  (defun my/elfeed-toggle-sort ()
-    "Toggle sorting of Elfeed search results between title and default (date)."
-    (interactive)
-    (if my/elfeed-sort-by-title-p
-        (progn
-          (setq elfeed-search-sort-function nil) ; revert to default (date) sorting
-          (setq my/elfeed-sort-by-title-p nil)
-          (message "Sorting by date (default)"))
-      (setq elfeed-search-sort-function
-            (lambda (a b)
-              (string> (downcase (elfeed-entry-title a)) ;; < in ascending, and > in descending
-                       (downcase (elfeed-entry-title b)))))
-      (setq my/elfeed-sort-by-title-p t)
-      (message "Sorting by title"))
-    ;; Update the search buffer to reflect the new sort.
-    (elfeed-search-update t))
+;;   (defun my/elfeed-toggle-sort ()
+;;     "Toggle sorting of Elfeed search results between title and default (date)."
+;;     (interactive)
+;;     (if my/elfeed-sort-by-title-p
+;;         (progn
+;;           (setq elfeed-search-sort-function nil) ; revert to default (date) sorting
+;;           (setq my/elfeed-sort-by-title-p nil)
+;;           (message "Sorting by date (default)"))
+;;       (setq elfeed-search-sort-function
+;;             (lambda (a b)
+;;               (string> (downcase (elfeed-entry-title a)) ;; < in ascending, and > in descending
+;;                        (downcase (elfeed-entry-title b)))))
+;;       (setq my/elfeed-sort-by-title-p t)
+;;       (message "Sorting by title"))
+;;     ;; Update the search buffer to reflect the new sort.
+;;     (elfeed-search-update t))
 
-  ;; Bind "t" in elfeed-search-mode to toggle sorting.
-  (with-eval-after-load 'elfeed-search
-    (define-key elfeed-search-mode-map (kbd "t") #'my/elfeed-toggle-sort))
+;;   ;; Bind "t" in elfeed-search-mode to toggle sorting.
+;;   (with-eval-after-load 'elfeed-search
+;;     (define-key elfeed-search-mode-map (kbd "t") #'my/elfeed-toggle-sort))
 
-  ;; Somewhere in your .emacs file
-  ;; (setq elfeed-feeds
-  ;;       '("http://nullprogram.com/feed/"
-  ;; "https://planet.emacslife.com/atom.xml"))
-  )
+;;   ;; Somewhere in your .emacs file
+;;   ;; (setq elfeed-feeds
+;;   ;;       '("http://nullprogram.com/feed/"
+;;   ;; "https://planet.emacslife.com/atom.xml"))
+;;   )
 
-(after! elfeed-org
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/myproj/org/elfeed.org")))
+;; (after! elfeed-org
+;;   (elfeed-org)
+;;   (setq rmh-elfeed-org-files (list "~/myproj/org/elfeed.org")))
 
 ;; Mark weekends days with a different color.
-(defadvice calendar-generate-month
-    (after highlight-weekend-days (month year indent) activate)
-  "Highlight weekend days"
-  (dotimes (i 31)
-    (let ((date (list month (1+ i) year)))
-      (if (or (= (calendar-day-of-week date) 0)
-              (= (calendar-day-of-week date) 6))
-          (calendar-mark-visible-date date 'font-lock-doc-string-face)))))
+
+;; 1. 定义一个独立的 Advice 函数
+(defun my-calendar-highlight-weekends (month year _indent)
+  "After generating the calendar month, highlight weekend days."
+  ;; 获取当前月准确的总天数（自动处理 2 月和闰年）
+  (let ((last-day (calendar-last-day-of-month month year)))
+    (dotimes (i last-day)
+      (let ((date (list month (1+ i) year)))
+        (if (or (= (calendar-day-of-week date) 0)   ; 0 代表周日
+                (= (calendar-day-of-week date) 6))  ; 6 代表周六
+            (calendar-mark-visible-date date 'font-lock-doc-string-face))))))
+
+;; 2. 使用符合 Emacs 30 标准的 advice-add 将其挂载为 :after 类型的钩子
+(advice-add 'calendar-generate-month :after #'my-calendar-highlight-weekends)
 
 ;; setup magit
 (after! magit
   (setq magit-diff-hide-trailing-cr-characters t)
   )
 
+;; setup latex mode
 ;; Enable forward/reverse search for zathura
-(after! latex
-  ;; use Ctrl+Mouse-1 to search.
-  (setq auto-mode-alist (cons '("\\.latex$" . latex-mode) auto-mode-alist))
-  ;; (add-hook 'plain-TeX-mode-hook 'LaTeX-mode)
-  (add-hook 'plain-TeX-mode-hook (lambda ()
-                                   (LaTeX-mode 1)
-                                   ))
-  ;; (LaTeX-mode)
-  (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
-  (define-key! TeX-mode-map "$" #'math-delimiters-insert)
-  (define-key! LaTeX-mode-map "$" #'math-delimiters-insert)
-  (define-key! org-mode-map "$" #'math-delimiters-insert)
-  (define-key! cdlatex-mode-map "$" nil)
-  ;; (add-hook! 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (define-key! LaTeX-mode-map "\\" #'TeX-insert-macro)
-  (define-key! TeX-mode-map "\\" #'TeX-insert-macro)
-  (setopt LaTeX-math-abbrev-prefix "~")
+;; (after! latex
+;;   ;; use Ctrl+Mouse-1 to search.
+;;   (setq auto-mode-alist (cons '("\\.latex$" . latex-mode) auto-mode-alist))
+;;   ;; (add-hook 'plain-TeX-mode-hook 'LaTeX-mode)
+;;   (add-hook 'plain-TeX-mode-hook (lambda ()
+;;                                    (LaTeX-mode)
+;;                                    ))
+;;   ;; (LaTeX-mode)
+;;   (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
+;;   (define-key! TeX-mode-map "$" #'math-delimiters-insert)
+;;   (define-key! LaTeX-mode-map "$" #'math-delimiters-insert)
+;;   (define-key! org-mode-map "$" #'math-delimiters-insert)
+;;   (define-key! cdlatex-mode-map "$" nil)
+;;   ;; (add-hook! 'LaTeX-mode-hook 'LaTeX-math-mode)
+;;   (define-key! LaTeX-mode-map "\\" #'TeX-insert-macro)
+;;   (define-key! TeX-mode-map "\\" #'TeX-insert-macro)
+;;   (setopt LaTeX-math-abbrev-prefix "~")
 
+;;   (with-eval-after-load 'cdlatex
+;;     (setq cdlatex-math-symbol-alist
+;;           '((?. ("\\cdot" "\\ldots")))))
+
+;;   (defun mg-TeX-fold-brace ()
+;;     "Hide the group in which point currently is located with \"{...}\"."
+;;     (interactive)
+;;     (let ((opening-brace (TeX-find-opening-brace))
+;;           (closing-brace (TeX-find-closing-brace))
+;;           priority ov)
+;;       (if (and opening-brace closing-brace)
+;;           (progn
+;;             (setq priority (TeX-overlay-prioritize opening-brace closing-brace))
+;;             (setq ov (make-overlay opening-brace closing-brace
+;;                                    (current-buffer) t nil))
+;;             (overlay-put ov 'category 'TeX-fold)
+;;             (overlay-put ov 'priority priority)
+;;             (overlay-put ov 'evaporate t)
+;;             (overlay-put ov 'TeX-fold-display-string-spec "{...}")
+;;             (TeX-fold-hide-item ov))
+;;         (message "No group found"))))
+
+;;   ;; Bind the function to C-c C-o p
+;;   (eval-after-load "tex-fold"
+;;     '(define-key TeX-fold-keymap "p" 'mg-TeX-fold-brace))
+;;   )
+
+;; Optimize latex mode
+(after! latex
+  ;; 1. 优化：使用更符合现代惯例的扩展名关联方式
+  (add-to-list 'auto-mode-alist '("\\.latex$" . LaTeX-mode)) ; 注意：AUCTeX 的主模式名是大写的 LaTeX-mode
+
+  ;; 2. 修复 Flycheck 报错：移除了多余的参数 1，并规范了钩子写法
+  (add-hook 'plain-TeX-mode-hook #'LaTeX-mode)
+
+  (add-to-list 'TeX-view-program-list '("zathura" zathura-forward-search))
+
+  ;; 3. 优化：既然已经配置了 cdlatex 二级菜单，记得顺手同步更新到 2 of 3 的位置
   (with-eval-after-load 'cdlatex
     (setq cdlatex-math-symbol-alist
           '((?. ("\\cdot" "\\ldots")))))
 
+  ;; 4. 优化：Doom 环境下，按键绑定应优先在特定 mode-hook 或 with-eval-after-load 里执行
+  (define-key! TeX-mode-map "$" #'math-delimiters-insert)
+  (define-key! LaTeX-mode-map "$" #'math-delimiters-insert)
+  (define-key! org-mode-map "$" #'math-delimiters-insert)
+  (define-key! cdlatex-mode-map "$" nil)
+
+  (define-key! LaTeX-mode-map "\\" #'TeX-insert-macro)
+  (define-key! TeX-mode-map "\\" #'TeX-insert-macro)
+  (setopt LaTeX-math-abbrev-prefix "~")
+
+  ;; 5. 自定义折叠函数
   (defun mg-TeX-fold-brace ()
     "Hide the group in which point currently is located with \"{...}\"."
     (interactive)
@@ -737,10 +974,9 @@
             (TeX-fold-hide-item ov))
         (message "No group found"))))
 
-  ;; Bind the function to C-c C-o p
-  (eval-after-load "tex-fold"
-    '(define-key TeX-fold-keymap "p" 'mg-TeX-fold-brace))
-  )
+  ;; 6. 优化：在 after! latex 内部，直接使用 with-eval-after-load 确保 tex-fold 加载后再绑定
+  (with-eval-after-load 'tex-fold
+    (define-key TeX-fold-keymap "p" #'mg-TeX-fold-brace)))
 
 (after! which-key
   (setopt which-key-use-C-h-commands t)
@@ -865,6 +1101,15 @@
 ;;               ("C-TAB" . 'copilot-accept-completion-by-word)
 ;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
+;; (use-package! emms
+;;   :config
+;;   (require 'emms-setup)
+;;   (emms-all))
+
+;; Hooks.
+(add-hook! 'emacs-lisp-mode-hook #'rainbow-mode)
+;; (add-hook! 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+
 ;; rainbow-delimiters settings
 (use-package! rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
@@ -917,5 +1162,5 @@
 ;;   :custom
 ;;   (flycheck-disable-excessive-checker '(org-lint)))
 
-(with-eval-after-load 'flycheck
-  (put 'org-lint 'flycheck-disabled t))
+;; (with-eval-after-load 'flycheck
+;;   (put 'org-lint 'flycheck-disabled t))

@@ -141,7 +141,7 @@
 (package! asy-mode
   :recipe
   (
-   :local-repo "/home/coeus/usr/local/texlive/2024/texmf-dist/asymptote"
+   :local-repo "/home/coeus/usr/local/texlive/2026/texmf-dist/asymptote"
    ))
 
 (package! chinese-conv
@@ -268,3 +268,23 @@
 
 ;; Ensure Emacs automatically removes trailing whitespace before saving buffers
 (package! stripspace)
+
+;; Maxima
+(package! maxima
+  :recipe
+  (
+   :host gitlab
+   :repo "sasanidas/maxima"
+   ))
+
+;; This library offers an alternative to calendar. It’s very similar and offer only a few options,
+;; like the possibility to color day according to the number of item in the org-agenda.
+(package! nano-calendar
+  :recipe
+  (
+   :host github
+   :repo "rougier/nano-calendar"
+   ))
+
+;; Download rime
+(package! rime)
