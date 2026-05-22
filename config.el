@@ -1119,6 +1119,18 @@
   (setq rainbow-delimiters-max-face-count 8)
   (setq rainbow-delimiters-outermost-only-face-count nil))
 
+(after! rainbow-delimiters
+  (defun my-rainbow-delimiters-fix-nil-depth-a (orig-fun depth match loc)
+    "Prevent rainbow-delimiters from crashing on depths greater than max-face-count in Emacs 30."
+    (let ((max-faces (and (boundp 'rainbow-delimiters-max-face-count)
+                          rainbow-delimiters-max-face-count)))
+      ;; 如果当前深度超过了最大脸部计数，强行将计算深度限制在最大范围内
+      (if (and max-faces (> depth max-faces))
+          (funcall orig-fun max-faces match loc)
+        (funcall orig-fun depth match loc))))
+
+  (advice-add 'rainbow-delimiters-default-pick-face
+              :around #'my-rainbow-delimiters-fix-nil-depth-a))
 
 (defun center-column ()
   "使当前列在窗口中居中"
