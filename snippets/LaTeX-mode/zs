@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: zs
+# key: zs
+# --
+{\scriptsize （\textcolor{red}{$0}）}

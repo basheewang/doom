@@ -2,4 +2,4 @@
 # name: mww
 # key: mww
 # --
-\markword{$1}{谓语$2}$0
+\markword{\textbf{$1}}{${2:谓语}$3}$0

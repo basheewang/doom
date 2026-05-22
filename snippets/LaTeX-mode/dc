@@ -3,4 +3,4 @@
 # --
 \markword[\mbox]{{\Large\textcolor{red}{\\( \lgroup \\)}}}{\textcolor{red}{定从${2}(${1})}}
 $0
-\markword[\mbox]{{\Large\textcolor{red}{\\( \rgroup \\)}}}{\textcolor{red}{定从${2}}}
+\markword[\mbox]{{\Large\textcolor{red}{\\( \rgroup \\)}}}{\textcolor{red}{定从${2}(${1})}}

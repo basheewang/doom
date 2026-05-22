@@ -137,6 +137,8 @@
 (global-set-key (kbd "C-c C-p") 'delete-pair)
 (global-set-key (kbd "C-c y") 'google-translate-at-point)
 (global-set-key (kbd "C-x f") 'find-file-at-point)
+(global-set-key [f6] 'consult-lsp-diagnostics)
+(global-set-key [f7] 'consult-flycheck)
 (global-set-key [f8] 'consult-fd)
 (global-set-key [f9] 'consult-ripgrep)
 (global-set-key [C-f9] 'consult-locate)
@@ -403,6 +405,11 @@
   (pyim-basedict-enable))
 (after! pyim-tsinghua-dict
   (pyim-tsinghua-dict-enable))
+
+;; (with-eval-after-load "liberime"
+;;   (liberime-try-select-schema "luna_pinyin_simp")
+;;   (setq pyim-default-scheme 'rime-quanpin))
+
 
 ;; ----------------------------------------------------------------------------
 ;; ESS related customization
@@ -708,6 +715,10 @@
   (define-key! TeX-mode-map "\\" #'TeX-insert-macro)
   (setopt LaTeX-math-abbrev-prefix "~")
 
+  (with-eval-after-load 'cdlatex
+    (setq cdlatex-math-symbol-alist
+          '((?. ("\\cdot" "\\ldots")))))
+
   (defun mg-TeX-fold-brace ()
     "Hide the group in which point currently is located with \"{...}\"."
     (interactive)
@@ -746,10 +757,6 @@
   (setopt sdcv-dictionary-simple-list
           '("21世纪英汉汉英双向词典"))
   )
-
-(with-eval-after-load "liberime"
-  (liberime-try-select-schema "luna_pinyin_simp")
-  (setq pyim-default-scheme 'rime-quanpin))
 
 
 ;; My Macros.

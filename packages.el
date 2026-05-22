@@ -50,7 +50,7 @@
 ;; (unpin! t)
 
 ;; (unpin! straight)
-;; (unpin! org)
+(unpin! org)
 ;; (unpin! diff-hl)
 ;; (unpin! with-editor)
 ;; (unpin! tablist)

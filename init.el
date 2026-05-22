@@ -16,7 +16,7 @@
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
-       (chinese +childframe +rime)
+       (chinese +childframe) ;; +rime)
        ;;japanese
        ;;layout            ; auie,ctsrnm is the superior home row
 
@@ -80,7 +80,7 @@
        vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       (syntax +childframe)              ; tasing you for every semicolon you forget
+       (syntax +childframe +icons)              ; tasing you for every semicolon you forget
        (spell +flyspell +aspell) ; tasing you for misspelling mispelling
        ;; grammar           ; tasing grammar mistake every you make
 

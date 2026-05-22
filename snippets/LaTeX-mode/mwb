@@ -2,4 +2,4 @@
 # name: mwb
 # key: mwb
 # --
-\markword[\uwave]{$1}{宾语$2}$0
+\markword[\uwave]{\textbf{$1}}{宾语$2}$0

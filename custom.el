@@ -7,7 +7,10 @@
  '(consult-ripgrep-args
    "rg --null --line-buffered --color=never --max-columns=5000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip")
  '(custom-safe-themes
-   '("18cf5d20a45ea1dff2e2ffd6fbcd15082f9aa9705011a3929e77129a971d1cb3"
+   '("1f292969fc19ba45fbc6542ed54e58ab5ad3dbe41b70d8cb2d1f85c22d07e518"
+     "b99ff6bfa13f0273ff8d0d0fd17cc44fab71dfdc293c7a8528280e690f084ef0"
+     "720838034f1dd3b3da66f6bd4d053ee67c93a747b219d1c546c41c4e425daf93"
+     "18cf5d20a45ea1dff2e2ffd6fbcd15082f9aa9705011a3929e77129a971d1cb3"
      "d6b934330450d9de1112cbb7617eaf929244d192c4ffb1b9e6b63ad574784aad"
      "b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" default))
  '(elfeed-feeds '("https://semiwiki.com/feed/"))
