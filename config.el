@@ -942,8 +942,28 @@
 
   ;; 3. 优化：既然已经配置了 cdlatex 二级菜单，记得顺手同步更新到 2 of 3 的位置
   (with-eval-after-load 'cdlatex
-    (setq cdlatex-math-symbol-alist
-          '((?. ("\\cdot" "\\ldots")))))
+    ;; 1. 安全地添加 TAB 快捷缩写
+    (setq cdlatex-command-alist
+          (append '(("tr" "Insert triangle symbol" "\\triangle " cdlatex-position-cursor nil nil t)
+                    ("ag" "Insert angle symbol"    "\\angle "    cdlatex-position-cursor nil nil t))
+                  cdlatex-command-alist))
+
+    ;; 2. 安全地更新或添加反引号二级菜单，不破坏原有的 \alpha, \beta 等符号
+    (setf (alist-get ?. cdlatex-math-symbol-alist)
+          '("\\cdot" "\\ldots"))
+    ;; 3. 精准修改斜杠（/）的 Level 1 和 Level 2
+    (setf (alist-get ?/ cdlatex-math-symbol-alist)
+          '("\\not" "\\parallel"))
+    (setf (alist-get ?| cdlatex-math-symbol-alist)
+          '("\\mapsto" "\\longmapsto" "\\perp"))
+    (setf (alist-get ?c cdlatex-math-symbol-alist)
+          '("" "\\circ"))
+    )
+  (add-hook 'cdlatex-mode-hook
+            (lambda ()
+              ;; 强制将 TAB 和 [tab] 键绑定到 cdlatex 的补全/移动函数上
+              (local-set-key (kbd "TAB") #'cdlatex-tab)
+              (local-set-key (kbd "<tab>") #'cdlatex-tab)))
 
   ;; 4. 优化：Doom 环境下，按键绑定应优先在特定 mode-hook 或 with-eval-after-load 里执行
   (define-key! TeX-mode-map "$" #'math-delimiters-insert)
@@ -976,7 +996,11 @@
 
   ;; 6. 优化：在 after! latex 内部，直接使用 with-eval-after-load 确保 tex-fold 加载后再绑定
   (with-eval-after-load 'tex-fold
-    (define-key TeX-fold-keymap "p" #'mg-TeX-fold-brace)))
+    (define-key TeX-fold-keymap "p" #'mg-TeX-fold-brace))
+
+  ;; (可选) 让 AUCTeX 自动保存文件后再编译，连按保存键都省了
+  ;; (setq TeX-save-query nil)
+  )
 
 (after! which-key
   (setopt which-key-use-C-h-commands t)

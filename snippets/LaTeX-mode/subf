@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: subf
+# key: subf
+# --
+        \begin{figure}[htbp]
+          \raggedleft
+          \begin{subfigure}{0.3\textwidth}
+            \centering
+            \begin{asy}
+            $1
+            \end{asy}
+            \caption{}
+          \end{subfigure}
+          \quad
+          \begin{subfigure}{0.3\textwidth}
+            \centering
+            \begin{asy}
+            $1
+            \end{asy}
+            \caption{}
+          \end{subfigure}
+          \quad
+          \begin{subfigure}{0.3\textwidth}
+            \centering
+            \begin{asy}
+            $1
+            \end{asy}
+            \caption{}
+          \end{subfigure}
+        \end{figure}$0

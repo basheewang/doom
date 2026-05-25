@@ -1,0 +1,6 @@
+# key: enn
+# name: enn
+# --
+\begin{enumerate}[leftmargin=*,,label=(\arabic*)]
+  \item $0
+\end{enumerate}

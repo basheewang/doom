@@ -1,0 +1,6 @@
+# key: zhc
+# name: zhc
+# --
+\markword[\mbox]{\large\textcolor{red}{\\(\\{\\)}}{\textcolor{red}{${1}主从}}
+$0
+\markword[\mbox]{\large\textcolor{red}{\\(\\}\\)}}{\textcolor{red}{${1}主从}}
