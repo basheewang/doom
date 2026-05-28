@@ -1200,3 +1200,20 @@
 
 ;; (with-eval-after-load 'flycheck
 ;;   (put 'org-lint 'flycheck-disabled t))
+
+;; 强制将原生编译的 cache 路径也加入到 Emacs 的 Tree-sitter 探测路径中
+(after! treesit
+  (add-to-list 'treesit-extra-load-path
+               (expand-file-name "~/.config/emacs/.local/cache/tree-sitter")))
+;; 使用下面的代码列出已经安装的TS语法
+;; (message "真正已安装的所有 TS 语法库: %s"
+;;          (delete-dups
+;;           (cl-mapcan (lambda
+;;                        (dir) (when
+;;                                  (and dir (file-exists-p dir))
+;;                                (mapcar
+;;                                 (lambda (file) (replace-regexp-in-string "^libtree-sitter-\\|\\..*$" "" file))
+;;                                 (directory-files dir nil "^libtree-sitter-")
+;;                                 )
+;;                                )
+;;                        ) treesit-extra-load-path)))
