@@ -1000,6 +1000,13 @@
 
   ;; (可选) 让 AUCTeX 自动保存文件后再编译，连按保存键都省了
   ;; (setq TeX-save-query nil)
+
+  ;;To add a menu bar in current ’latex-mode’ buffer
+  ;; Add here your personal features for ’latex-mode’:
+  (with-eval-after-load 'asy-mode
+    (unless (boundp 'LaTeX-verbatim-regexp)
+      (setq LaTeX-verbatim-regexp "verbatim\\*?")))
+  (asy-insinuate-latex t) ;; Asymptote globally insinuates Latex.
   )
 
 (after! which-key
