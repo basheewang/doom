@@ -959,11 +959,11 @@
     (setf (alist-get ?c cdlatex-math-symbol-alist)
           '("" "\\circ"))
     )
-  (add-hook 'cdlatex-mode-hook
-            (lambda ()
-              ;; 强制将 TAB 和 [tab] 键绑定到 cdlatex 的补全/移动函数上
-              (local-set-key (kbd "TAB") #'cdlatex-tab)
-              (local-set-key (kbd "<tab>") #'cdlatex-tab)))
+  ;; (add-hook 'cdlatex-mode-hook
+  ;;           (lambda ()
+  ;;             ;; 强制将 TAB 和 [tab] 键绑定到 cdlatex 的补全/移动函数上
+  ;;             (local-set-key (kbd "TAB") #'cdlatex-tab)
+  ;;             (local-set-key (kbd "<tab>") #'cdlatex-tab)))
 
   ;; 4. 优化：Doom 环境下，按键绑定应优先在特定 mode-hook 或 with-eval-after-load 里执行
   (define-key! TeX-mode-map "$" #'math-delimiters-insert)
@@ -1224,3 +1224,9 @@
 ;;                                 )
 ;;                                )
 ;;                        ) treesit-extra-load-path)))
+
+;; gptel OPTIONAL configuration
+(setq gptel-model   'deepseek-reasoner
+      gptel-backend (gptel-make-deepseek "DeepSeek"
+                      :stream t
+                      :key (getenv "DEEPSEEK_API_KEY")))
