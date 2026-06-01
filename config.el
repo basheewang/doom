@@ -592,6 +592,25 @@
   :config
   (setq rime-user-data-dir "~/.config/emacs/.local/cache/rime/"))
 
+(use-package! rime
+  :custom
+  ;; 1. 设置 Emacs 的默认输入法为 RIME
+  (default-input-method "rime")
+
+  ;; 2. 这里的快捷键可以让未激活输入法时，按一次「反单引号」临时进入 RIME
+  (rime-inline-ascii-trigger 'caron)
+
+  :config
+  ;; 3. 精准指向你已经配置好、并且没有锁死文件的 RIME 目录
+  (setq rime-user-data-dir "~/.config/emacs/.local/cache/rime/")
+
+  ;; 4. 优化断言：解决部分 Linux 环境下 Zsh 环境变量引起的 RIME 编译探测冲突
+  (setq rime-librime-paths '("/usr/lib/librime.so" "/usr/local/lib/librime.so"))
+
+  ;; 5. 绑定快捷键：在任何模式下按 C-\ 即可一键自由切换中英文输入状态
+  ;; (global-set-key (kbd "C-\\") #'toggle-input-method)
+  )
+
 ;; ----------------------------------------------------------------------------
 ;; ESS related customization
 (after! ess
