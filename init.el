@@ -22,10 +22,10 @@
 
        :completion
        (company +childframe)           ; the ultimate code completion backend
-       ;; (helm +icons)              ; the *other* search engine for love and life
-       ;;ido               ; the other *other* search engine...
-       ;; (ivy +icons +prescient)               ; a search engine for love and life
-       (vertico +childframe +icons)           ; the search engine of the future
+       ;; (helm +icons)                 ; the *other* search engine for love and life
+       ;; ido                           ; the other *other* search engine...
+       ;; (ivy +icons +prescient)       ; a search engine for love and life
+       (vertico +childframe +icons)    ; the search engine of the future
 
        :ui
        ;;deft              ; notational velocity for Emacs

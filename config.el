@@ -587,20 +587,13 @@
 ;;   (setq pyim-default-scheme 'rime-quanpin))
 
 (use-package! rime
-  :custom
-  (default-input-method "rime")
   :config
-  (setq rime-user-data-dir "~/.config/emacs/.local/cache/rime/"))
-
-(use-package! rime
-  :custom
   ;; 1. 设置 Emacs 的默认输入法为 RIME
-  (default-input-method "rime")
+  (setq-default default-input-method "rime")
 
-  ;; 2. 这里的快捷键可以让未激活输入法时，按一次「反单引号」临时进入 RIME
-  (rime-inline-ascii-trigger 'caron)
+  ;; 2. 其余配置保持在 :config 块中安全执行
+  (setq rime-inline-ascii-trigger 'caron)
 
-  :config
   ;; 3. 精准指向你已经配置好、并且没有锁死文件的 RIME 目录
   (setq rime-user-data-dir "~/.config/emacs/.local/cache/rime/")
 
