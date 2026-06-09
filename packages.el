@@ -288,3 +288,13 @@
 
 ;; Download rime
 (package! rime)
+
+
+;; ox-hugo package: A carefully crafted Org exporter back-end for Hugo
+;; Remember to install: hugo and dart-sass.
+(package! ox-hugo
+  :recipe
+  (
+   :host github
+   :repo "kaushalmodi/ox-hugo"
+   ))

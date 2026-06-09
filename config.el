@@ -1242,3 +1242,7 @@
       gptel-backend (gptel-make-deepseek "DeepSeek"
                       :stream t
                       :key (getenv "DEEPSEEK_API_KEY")))
+
+;; ox-hugo config
+(after! ox
+  (require 'ox-hugo))
