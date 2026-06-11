@@ -1221,9 +1221,29 @@
 ;;   (put 'org-lint 'flycheck-disabled t))
 
 ;; 强制将原生编译的 cache 路径也加入到 Emacs 的 Tree-sitter 探测路径中
+;; (after! treesit
+;;   (add-to-list 'treesit-extra-load-path
+;;                (expand-file-name "~/.config/emacs/.local/cache/tree-sitter")))
 (after! treesit
   (add-to-list 'treesit-extra-load-path
-               (expand-file-name "~/.config/emacs/.local/cache/tree-sitter")))
+               (expand-file-name "~/.config/emacs/.local/cache/tree-sitter"))
+  (defun my/enable-rainbow-delimiters-for-ts ()
+    "从 Tree-sitter 的高亮特性中剔除 bracket 和 delimiter，从而复活 rainbow-delimiters。"
+    (when (boundp 'treesit-font-lock-feature-list)
+      ;; 1. 遍历当前 mode 的 4 个特性等级，把 bracket 和 delimiter 踢出去
+      (setq-local treesit-font-lock-feature-list
+                  (mapcar (lambda (level)
+                            (remq 'bracket (remq 'delimiter level)))
+                          treesit-font-lock-feature-list))
+      ;; 2. 强制 Tree-sitter 重新计算当前 buffer 的高亮规则
+      (treesit-font-lock-recompute-features)))
+
+  ;; 将这个规则挂载到你常用的 ts-mode 上
+  (add-hook 'js-ts-mode-hook #'my/enable-rainbow-delimiters-for-ts)
+
+  ;; 建议：顺手把你可能用到的其他前端 ts 模式也加上
+  (add-hook 'typescript-ts-mode-hook #'my/enable-rainbow-delimiters-for-ts)
+  (add-hook 'tsx-ts-mode-hook #'my/enable-rainbow-delimiters-for-ts))
 ;; 使用下面的代码列出已经安装的TS语法
 ;; (message "真正已安装的所有 TS 语法库: %s"
 ;;          (delete-dups
