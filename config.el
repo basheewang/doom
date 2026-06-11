@@ -217,15 +217,15 @@
               ;; 确保 LSP 模式下弹窗速度与全局保持一致
               (setq-local company-idle-delay 0.1))))
 
-;; (after! company
-;;   (add-to-list 'company-backend #'company-tabnine)
-;;   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
-;;   (setq company-show-quick-access t)
-;;   (setq company-idle-delay 0)
-;;   (setq company-show-quick-access t))
-
-;; (use-package! company-box
-;;   :hook (company-mode . company-box-mode))
+;; enable auto format when save buffer.
+(after! eglot
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              ;; 将 eglot-format-buffer 挂载到保存前的触发器上
+              ;; 参数解释：
+              ;; nil: 不指定特殊的执行优先级
+              ;; t:   【核心机制】将这个 hook 设置为 Buffer-Local（仅当前文件生效）
+              (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
 
 ;; corfu config
 ;; (after! corfu
