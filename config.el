@@ -83,6 +83,46 @@
 
 (setq ispell-alternate-dictionary "/home/coeus/.config/doom/english-words.txt")
 
+;; All my shortcuts
+(global-set-key [C-right] 'forward-sexp)
+(global-set-key [C-left] 'backward-sexp)
+(global-set-key [M-right] 'right-word)
+(global-set-key [M-left] 'left-word)
+(global-set-key (kbd "C-x <up>") 'other-window)
+(global-set-key (kbd "C-x <down>") 'other-window)
+(global-set-key (kbd "C-c 0") 'search-forward)
+(global-set-key (kbd "C-c +") 'pop-global-mark)
+(global-set-key (kbd "C-c \"") 'align-entire)
+
+(global-set-key [S-f1] 'calendar)
+(global-set-key [f3] 'ibuffer)
+;; (global-set-key [f4] 'kill-this-buffer)    ;; Doesn't work any more with Emacs 30
+(global-set-key [f4] 'kill-current-buffer)
+
+(global-set-key (kbd "C-x m") 'consult-buffer)
+(global-set-key (kbd "C-c b") 'bing-dict-brief)
+(global-set-key (kbd "C-c d") 'dictionary-search)
+(global-set-key (kbd "C-c C-p") 'delete-pair)
+(global-set-key (kbd "C-c y") 'google-translate-at-point)
+(global-set-key (kbd "C-x f") 'find-file-at-point)
+(global-set-key [f6] 'consult-lsp-diagnostics)
+(global-set-key [f7] 'consult-flycheck)
+(global-set-key [f8] 'consult-fd)
+(global-set-key [f9] 'consult-ripgrep)
+(global-set-key [C-f9] 'consult-locate)
+;; (global-set-key [f10] 'helm-ag)
+;; (global-set-key (kbd "C-k") 'kill-line)
+(global-set-key (kbd "C-c h") 'avy-goto-char)
+;; Set selection faces
+(custom-set-faces!
+  ;; 注意前面的单引号，它采用了更简洁的键值对语法
+  '(region :background "#E66" :foreground "#ffffff"))
+;; more face config
+;; (custom-set-faces!
+;;   '(region :background "#E66" :foreground "#ffffff")
+;;   '(hl-line :background "#222222")               ;; 光标所在行的背景色
+;;   '(font-lock-comment-face :foreground "#888888" :slant italic)) ;; 注释颜色及斜体
+
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -115,38 +155,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; All my cstomized config
-(global-set-key [C-right] 'forward-sexp)
-(global-set-key [C-left] 'backward-sexp)
-(global-set-key [M-right] 'right-word)
-(global-set-key [M-left] 'left-word)
-(global-set-key (kbd "C-x <up>") 'other-window)
-(global-set-key (kbd "C-x <down>") 'other-window)
-(global-set-key (kbd "C-c 0") 'search-forward)
-(global-set-key (kbd "C-c +") 'pop-global-mark)
-(global-set-key (kbd "C-c \"") 'align-entire)
-
-(global-set-key [S-f1] 'calendar)
-(global-set-key [f3] 'ibuffer)
-;; (global-set-key [f4] 'kill-this-buffer)    ;; Doesn't work any more with Emacs 30
-(global-set-key [f4] 'kill-current-buffer)
-
-(global-set-key (kbd "C-x m") 'consult-buffer)
-(global-set-key (kbd "C-c b") 'bing-dict-brief)
-(global-set-key (kbd "C-c d") 'dictionary-search)
-(global-set-key (kbd "C-c C-p") 'delete-pair)
-(global-set-key (kbd "C-c y") 'google-translate-at-point)
-(global-set-key (kbd "C-x f") 'find-file-at-point)
-(global-set-key [f6] 'consult-lsp-diagnostics)
-(global-set-key [f7] 'consult-flycheck)
-(global-set-key [f8] 'consult-fd)
-(global-set-key [f9] 'consult-ripgrep)
-(global-set-key [C-f9] 'consult-locate)
-;; (global-set-key [f10] 'helm-ag)
-;; (global-set-key (kbd "C-k") 'kill-line)
-(global-set-key (kbd "C-c h") 'avy-goto-char)
-;; Set selection faces
-(set-face-attribute 'region nil :background "#E66" :foreground "#ffffff")
 
 ;; ibuffer format
 (after! ibuffer
@@ -218,6 +226,7 @@
               (setq-local company-idle-delay 0.1))))
 
 ;; enable auto format when save buffer.
+;;
 (after! eglot
   (add-hook 'eglot-managed-mode-hook
             (lambda ()
@@ -1242,7 +1251,10 @@
 
 (after! rainbow-delimiters
   (defun my-rainbow-delimiters-fix-nil-depth-a (orig-fun depth match loc)
-    "Prevent rainbow-delimiters from crashing on depths greater than max-face-count in Emacs 30."
+    "Prevent `rainbow-delimiters' from crashing on extreme depths.
+
+This fixes an issue in Emacs 30 where depths greater than
+`max-face-count' cause a nil depth error."
     (let ((max-faces (and (boundp 'rainbow-delimiters-max-face-count)
                           rainbow-delimiters-max-face-count)))
       ;; 如果当前深度超过了最大脸部计数，强行将计算深度限制在最大范围内
@@ -1252,6 +1264,7 @@
 
   (advice-add 'rainbow-delimiters-default-pick-face
               :around #'my-rainbow-delimiters-fix-nil-depth-a))
+
 
 (defun center-column ()
   "使当前列在窗口中居中"
