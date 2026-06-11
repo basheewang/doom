@@ -182,6 +182,41 @@
   ;; (setq chatgpt-shell-additional-curl-options "https://192.168.6.1:10809")
   )
 
+;; company config
+;; ========================================================
+;; 1. Company 核心与 TNG (Tab-and-Go) 配置
+;; ========================================================
+(after! company
+  ;; 【核心】：调用 Company 官方的 TNG 初始化函数，彻底接管 TAB 和 RET 键
+  ;; 实现真正的“Tab选中并虚拟上屏，继续输入即确认，回车只负责换行”
+  (company-tng-mode)
+
+  ;; 基础参数调优
+  (setq company-idle-delay 0.1                 ;; 触发延迟极速版
+        company-minimum-prefix-length 2        ;; 输入2个字符即触发
+        company-selection-wrap-around t        ;; 列表循环滚动
+        company-require-match 'never           ;; 允许输入非补全项内容
+        company-show-quick-access t            ;; ✨ 使用最新版变量：在候选项旁显示 1-0 数字快捷键
+        company-tooltip-limit 12)              ;; 限制最大显示候选项数量
+
+  ;; 视觉弹窗设置 (配合 init.el 中的 +childframe)
+  (when (modulep! :completion company +childframe)
+    (after! company-box
+      (setq company-box-doc-delay 0.5))))      ;; 停留0.5秒后自动弹出文档侧边栏
+
+;; ========================================================
+;; 2. Eglot 与 Company 完美融合配置
+;; ========================================================
+(after! eglot
+  ;; 必须使用 Hook，确保仅在 Eglot 激活的 Buffer 内部修改补全后端，避免污染全局或引发 JSON 解析错误
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              ;; 混合后端：将 Eglot原生补全 (capf)、代码片段 (yasnippet) 和当前文件内单词 (dabbrev) 绑在一起
+              (setq-local company-backends
+                          '((company-capf :with company-yasnippet company-dabbrev-code)))
+              ;; 确保 LSP 模式下弹窗速度与全局保持一致
+              (setq-local company-idle-delay 0.1))))
+
 ;; (after! company
 ;;   (add-to-list 'company-backend #'company-tabnine)
 ;;   (setq +lsp-company-backends '(company-tabnine :separate company-capf company-yasnippet))
@@ -191,6 +226,49 @@
 
 ;; (use-package! company-box
 ;;   :hook (company-mode . company-box-mode))
+
+;; corfu config
+;; (after! corfu
+;;   ;; 1. 基础行为微调
+;;   (setq corfu-auto t                 ;; 开启自动触发
+;;         corfu-auto-delay 0.1         ;; 将延迟从默认的 0.2 缩短到 0.1 秒，手感更连贯
+;;         corfu-auto-prefix 2          ;; 输入 2 个字符后就开始补全 (默认是 3)
+;;         corfu-quit-no-match t        ;; 当没有任何匹配项时，立刻关闭弹窗，不遮挡视线
+;;         corfu-quit-at-boundary t     ;; 当遇到单词边界（如空格）时退出补全
+;;         corfu-preselect 'prompt)     ;; 【防误触核心】默认不自动选中第一个候选项！必须手动用方向键或 TAB 选定，这样按回车时才会上屏，否则就是普通换行。
+
+;;   ;; 2. 开启文档弹窗 (Eglot 神器)
+;;   ;; 当你在候选项上停留时，自动在一个旁边的悬浮窗里显示该函数/变量的完整文档说明。
+;;   (corfu-popupinfo-mode 1)
+;;   (setq corfu-popupinfo-delay '(0.5 . 0.2)) ;; 停留 0.5 秒后显示文档
+
+;;   ;; 3. 记忆历史选择
+;;   ;; 让 Corfu 记住你最常选的词汇，下次它们会排在补全列表的最前面
+;;   (corfu-history-mode 1)
+
+;;   ;; 4. 优化快捷键映射：类似 VS Code 的 Tab-and-Go 体验
+;;   (map! :map corfu-map
+;;         ;; 使用 TAB / S-TAB 在补全列表中上下穿梭
+;;         "TAB"        #'corfu-next
+;;         [tab]        #'corfu-next
+;;         "S-TAB"      #'corfu-previous
+;;         [backtab]    #'corfu-previous
+;;         ;; 按下回车确认选中项
+;;         "RET"        #'corfu-insert
+;;         [return]     #'corfu-insert
+;;         ;; 在文档弹窗中上下滚动 (不离开补全列表)
+;;         "M-p"        #'corfu-popupinfo-scroll-down
+;;         "M-n"        #'corfu-popupinfo-scroll-up))
+
+;; (use-package! cape
+;;   :init
+;;   ;; 在默认的补全函数列表中加入普通文本单词和文件路径的补全能力
+;;   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+;;   (add-to-list 'completion-at-point-functions #'cape-file))
+
+;; ;; 【可选】将 Eglot 和普通单词混合补全
+;; ;; 如果你希望在写代码时，Eglot 的提示和文件内的普通单词提示同时出现，可以挂载这个钩子：
+;; (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
 
 ;; org mode settings
 ;; (after! org
@@ -1205,6 +1283,14 @@
         (consult-line text))
     (consult-line)))
 (global-set-key (kbd "C-c *") 'consult-line-with-region)
+
+(after! consult
+  ;; 移除了默认配置中的 -p 参数，保留 -i (忽略大小写)
+  ;; 如果你想继续保持默认能搜隐藏文件，可以把 -H 也加上
+  (setq consult-fd-args
+        (if (executable-find "fdfind")
+            "fdfind --color=never -i -u"
+          "fd --color=never -i -u")))
 
 (use-package! stripspace
   ;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook

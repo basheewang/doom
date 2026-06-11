@@ -21,8 +21,8 @@
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
-       (company +childframe)           ; the ultimate code completion backend
-       (corfu +orderless)  ; complete with cap(f), cape and a flying feather!
+       (company +childframe +tng)            ; the ultimate code completion backend
+       ;; (corfu +icons +orderless + dabbrev)  ; complete with cap(f), cape and a flying feather!
        ;; (helm +icons)                 ; the *other* search engine for love and life
        ;; ido                           ; the other *other* search engine...
        ;; (ivy +icons +prescient)       ; a search engine for love and life
