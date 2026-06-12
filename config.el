@@ -73,15 +73,21 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/myproj/org/")
 
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
+;; suggest to remove them by gemini.
+;; (prefer-coding-system 'utf-8)
+;; (set-default-coding-systems 'utf-8)
+;; (setq default-buffer-file-coding-system 'utf-8)
 ;; (setq! default-input-method "rime")
 
 ;; (global-visual-line-mode)
 (global-auto-revert-mode)
 
-(setq ispell-alternate-dictionary "/home/coeus/.config/doom/english-words.txt")
+;; ispell dictionary config.
+(after! ispell
+  ;; 使用 doom-user-dir 保持路径动态拼接，确保配置在任何机器上都能无缝漫游
+  ;; 设置个人词典的绝对路径
+  (setq ispell-personal-dictionary (expand-file-name ".ispell_personal" doom-user-dir)
+        ispell-alternate-dictionary (expand-file-name "english-words.txt" doom-user-dir)))
 
 ;; All my shortcuts
 (global-set-key [C-right] 'forward-sexp)
