@@ -252,8 +252,8 @@
    :repo "emacsomancer/pdffontetc"
    ))
 
-;; (package! copilot
-;;   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 
 ;; only highlight the current region when enabled.
 (package! focus
@@ -298,3 +298,6 @@
    :host github
    :repo "kaushalmodi/ox-hugo"
    ))
+
+;; enable nerd-fonts-icons for ibuffer.
+(package! nerd-icons-ibuffer)

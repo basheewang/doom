@@ -1,5 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;;; commentary:
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
@@ -233,8 +234,47 @@
            " " filename-and-process)
           (mark " "
                 (name 16 -1)
-                " " filename))))
+                " " filename)))
 
+  (require 'ibuf-ext)
+
+  ;; 隐藏烦人的内部/后台 Buffer
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Eglot")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Flymake")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Async")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Warnings")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Backtrace")
+  ;; (add-to-list 'ibuffer-never-show-predicates "^\\*Copilot")
+  ;; 如果你够狠，甚至可以隐藏除了 scratch 和 Messages 之外的所有星号 buffer
+
+  ;; 定义你专属的分类逻辑
+  (setq ibuffer-saved-filter-groups
+        '(("Default"
+           ;; 1. 核心配置文件
+           ("Emacs Config" (filename . ".config/doom"))
+           ;; 2. 前端/Web 框架开发
+           ("Docusaurus" (or (filename . "website")
+                             (mode . typescript-mode)
+                             (mode . js-mode)))
+           ;; 3. 语言与工具
+           ("LaTeX Docs" (mode . latex-mode))
+           ("C/C++" (or (mode . c-mode) (mode . c++-mode)))
+           ;; 4. 系统管理与 Git
+           ("Magit" (name . "^magit"))
+           ("Dired" (mode . dired-mode))
+           ;; 5. 兜底的临时文件
+           ("Org/Notes" (mode . org-mode)))))
+
+  ;; 让 ibuffer 启动时强制加载这套分组
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-switch-to-saved-filter-groups "Default")))
+  )
+;; Enable icons in ibuffer
+(use-package! nerd-icons-ibuffer
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
+;; A function to merge two lists, where the second list's content is appended to the first list.
 (defun merge-list-to-list (dst src)
   "Merges content of the 2nd list(SRC) with the 1st one(DST)."
   (set dst
@@ -1311,13 +1351,20 @@
   )
 
 ;; accept completion from copilot and fallback to company
-;; (use-package! copilot
-;;   :hook (prog-mode . copilot-mode)
-;;   :bind (:map copilot-completion-map
-;;               ("<tab>" . 'copilot-accept-completion)
-;;               ("TAB" . 'copilot-accept-completion)
-;;               ("C-TAB" . 'copilot-accept-completion-by-word)
-;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
+  :config
+  (add-to-list 'copilot-indentation-alist '(prog-mode 2))
+  (add-to-list 'copilot-indentation-alist '(org-mode 2))
+  (add-to-list 'copilot-indentation-alist '(text-mode 2))
+  (add-to-list 'copilot-indentation-alist '(clojure-mode 2))
+  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
+  )
 
 ;; (use-package! emms
 ;;   :config
@@ -1356,7 +1403,7 @@ This fixes an issue in Emacs 30 where depths greater than
   (advice-add 'rainbow-delimiters-default-pick-face
               :around #'my-rainbow-delimiters-fix-nil-depth-a))
 
-
+;; Define a function to make current window in ceter.
 (defun center-column ()
   "使当前列在窗口中居中."
   (interactive)
@@ -1378,7 +1425,7 @@ This fixes an issue in Emacs 30 where depths greater than
 (global-set-key (kbd "C-c -") 'center-point)
 
 (defun consult-line-with-region ()
-  "Get matched line in the selected region."
+  "Get matched line for the selected string in current buffer."
   (interactive)
   (if (use-region-p)
       (let ((text (buffer-substring-no-properties
