@@ -3,6 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+;;; code:
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -44,7 +45,7 @@
 ;;     (set-fontset-font t charset (font-spec :family "FZSongKeBenXiuKai-R-GBK" :size 20))))
 
 (defun my-cjk-font()
-  ;; 1. 先设置基础 CJK 字符集（这会覆盖绝大多数常用汉字）
+  "先设置基础 CJK 字符集（这会覆盖绝大多数常用汉字）."
   (dolist (charset '(kana han cjk-misc symbol bopomofo hangul))
     (cond ((eq charset 'hangul)
            (set-fontset-font t charset (font-spec :family "Noto Serif KR" :size 20)))
@@ -76,7 +77,7 @@
 ;; 自动记忆并恢复 Emacs 窗口的位置与大小 (含最大化状态)
 ;; ========================================================
 (defvar my-saved-frame-file (expand-file-name ".frame-geometry" doom-user-dir)
-  "存放窗口状态的本地缓存文件")
+  "存放窗口状态的本地缓存文件.")
 
 ;; 1. 启动时：如果存在记录文件，读取并将其注入到初始化参数中
 (when (file-exists-p my-saved-frame-file)
@@ -136,25 +137,46 @@
 (global-set-key (kbd "C-c \"") 'align-entire)
 
 (global-set-key [S-f1] 'calendar)
-(global-set-key [f3] 'ibuffer)
-;; (global-set-key [f4] 'kill-this-buffer)    ;; Doesn't work any more with Emacs 30
+;; (global-set-key [f3] 'ibuffer)
 (global-set-key [f4] 'kill-current-buffer)
 
-(global-set-key (kbd "C-x m") 'consult-buffer)
 (global-set-key (kbd "C-c b") 'bing-dict-brief)
 (global-set-key (kbd "C-c d") 'sdcv-search-pointer)
 (global-set-key (kbd "C-c D") 'sdcv-search-pointer+)
 (global-set-key (kbd "C-c C-p") 'delete-pair)
 (global-set-key (kbd "C-c y") 'google-translate-at-point)
 (global-set-key (kbd "C-x f") 'find-file-at-point)
-(global-set-key [f6] 'consult-lsp-diagnostics)
-(global-set-key [f7] 'consult-flycheck)
-(global-set-key [f8] 'consult-fd)
-(global-set-key [f9] 'consult-ripgrep)
-(global-set-key [C-f9] 'consult-locate)
+
+;; ========================================================
+;; Consult 核心功能键位绑定 (非 Evil 模式)
+;; ========================================================
+
+;; 1. 搜索类功能 (挂载到原生 M-s 前缀下)
+(global-set-key (kbd "M-s r") 'consult-ripgrep)
+(global-set-key (kbd "M-s f") 'consult-fd)
+(global-set-key (kbd "M-s l") 'consult-line)    ;; 极速单文件内搜索，极其强大
+(global-set-key (kbd "M-s L") 'consult-locate)
+
+;; 2. 跳转与大纲功能 (挂载到原生 M-g 前缀下)
+(global-set-key (kbd "M-g i") 'consult-imenu)   ;; 全局函数/标题大纲跳转
+(global-set-key (kbd "M-g x") 'consult-lsp-diagnostics) ;; 快速查看当前项目的全部报错
+(global-set-key (kbd "M-g f") 'consult-flycheck) ;; 快速查看当前项目的全部报错
+(global-set-key (kbd "M-g m") 'consult-flymake) ;; 快速查看当前项目的全部报错
+
+;; 3. 【极度推荐】直接覆盖 Emacs 的高频原生快捷键
+(global-set-key (kbd "M-y") 'consult-yank-pop)  ;; 替换原生 M-y，提供剪贴板历史可视化菜单
+(global-set-key (kbd "C-x m") 'consult-buffer)  ;; 替换原生 C-x b，整合最近文件与 Buffer 列表
+
+;; (global-set-key [f6] 'consult-lsp-diagnostics)
+;; (global-set-key [f7] 'consult-flycheck)
+;; (global-set-key [f8] 'consult-fd)
+;; (global-set-key [f9] 'consult-ripgrep)
+;; (global-set-key [C-f9] 'consult-locate)
 ;; (global-set-key [f10] 'helm-ag)
 ;; (global-set-key (kbd "C-k") 'kill-line)
+
 (global-set-key (kbd "C-c h") 'avy-goto-char)
+
 ;; Set selection faces
 (custom-set-faces!
   ;; 注意前面的单引号，它采用了更简洁的键值对语法
@@ -214,7 +236,7 @@
                 " " filename))))
 
 (defun merge-list-to-list (dst src)
-  "Merges content of the 2nd list with the 1st one"
+  "Merges content of the 2nd list(SRC) with the 1st one(DST)."
   (set dst
        (append (eval dst) src)))
 
@@ -1007,7 +1029,7 @@
 
 ;; 1. 定义一个独立的 Advice 函数
 (defun my-calendar-highlight-weekends (month year _indent)
-  "After generating the calendar month, highlight weekend days."
+  "After generating the calendar MONTH and YEAR, highlight weekend days."
   ;; 获取当前月准确的总天数（自动处理 2 月和闰年）
   (let ((last-day (calendar-last-day-of-month month year)))
     (dotimes (i last-day)
@@ -1303,8 +1325,11 @@
 ;;   (emms-all))
 
 ;; Hooks.
-(add-hook! 'emacs-lisp-mode-hook #'rainbow-mode)
-;; (add-hook! 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+(add-hook! 'emacs-lisp-mode-hook
+           #'rainbow-mode
+           #'flymake-mode
+           )
+;; (add-hook! emacs-lisp-mode #'rainbow-mode #'flymake-mode)
 
 ;; rainbow-delimiters settings
 (use-package! rainbow-delimiters
@@ -1333,7 +1358,7 @@ This fixes an issue in Emacs 30 where depths greater than
 
 
 (defun center-column ()
-  "使当前列在窗口中居中"
+  "使当前列在窗口中居中."
   (interactive)
   (let* ((win (selected-window))
          (win-width (window-width win))
@@ -1346,13 +1371,14 @@ This fixes an issue in Emacs 30 where depths greater than
 
 ;; 同时居中行和列
 (defun center-point ()
-  "使光标点居中显示"
+  "使光标点居中显示."
   (interactive)
   (recenter)
   (center-column))
 (global-set-key (kbd "C-c -") 'center-point)
 
 (defun consult-line-with-region ()
+  "Get matched line in the selected region."
   (interactive)
   (if (use-region-p)
       (let ((text (buffer-substring-no-properties
