@@ -1105,6 +1105,11 @@ Output code in clean blocks.")
 ;;   (elfeed-org)
 ;;   (setq rmh-elfeed-org-files (list "~/myproj/org/elfeed.org")))
 
+;; (use-package! elfeed
+;;   (setq elfeed-feeds
+;;         '("http://nullprogram.com/feed/"
+;; "https://planet.emacslife.com/atom.xml")))
+
 ;; setup magit
 (after! magit
   (setq magit-diff-hide-trailing-cr-characters t)
@@ -1280,16 +1285,15 @@ Output code in clean blocks.")
     (delete-region beg end)
     (insert (nreverse region))))
 
+;; powerthesaurus is a great online thesaurus,
+;; and this package provides a convenient Emacs interface to it.
 (use-package! powerthesaurus
   :bind(
         ("C-c C-d p" . powerthesaurus-lookup-dwim)
         ))
 
-;; (use-package! elfeed
-;;   (setq elfeed-feeds
-;;         '("http://nullprogram.com/feed/"
-;; "https://planet.emacslife.com/atom.xml")))
-
+;; cape provides a collection of
+;; completion-at-point-functions that can be used for completion at point.
 (use-package! cape
   ;; Bind dedicated completion commands
   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
@@ -1459,6 +1463,18 @@ This fixes an issue in Emacs 30 where depths greater than
         (if (executable-find "fdfind")
             "fdfind --color=never -i -u"
           "fd --color=never -i -u")))
+
+(defun my-consult-ripgrep-at-point ()
+  "在当前 Project 根目录下，搜索光标下的单词."
+  (interactive)
+  (let ((default-directory (or (doom-project-root) default-directory))
+        (word (thing-at-point 'symbol t))) ;; 获取光标下的单词
+    (consult-ripgrep nil (if word (regexp-quote word) nil))))
+
+;; 绑定到一个方便的快捷键
+;; 使用现代 Emacs 推荐的 keymap-global-set 语法
+;; 将光标下的单词搜索绑定到 M-s d
+(keymap-global-set "M-s d" #'my-consult-ripgrep-at-point)
 
 (use-package! stripspace
   ;; Enable for prog-mode-hook, text-mode-hook, conf-mode-hook
