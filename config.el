@@ -69,6 +69,41 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; 强制开启全局光标位置记忆功能
+(save-place-mode 1)
+
+;; ========================================================
+;; 自动记忆并恢复 Emacs 窗口的位置与大小 (含最大化状态)
+;; ========================================================
+(defvar my-saved-frame-file (expand-file-name ".frame-geometry" doom-user-dir)
+  "存放窗口状态的本地缓存文件")
+
+;; 1. 启动时：如果存在记录文件，读取并将其注入到初始化参数中
+(when (file-exists-p my-saved-frame-file)
+  (ignore-errors
+    (with-temp-buffer
+      (insert-file-contents my-saved-frame-file)
+      (let ((geometry (read (current-buffer))))
+        ;; 注入到新框架的默认参数中
+        (setq initial-frame-alist (append geometry initial-frame-alist))
+        (setq default-frame-alist (append geometry default-frame-alist))
+        ;; 如果当前已经是 GUI 图形界面，则立即对当前窗口生效
+        (when (display-graphic-p)
+          (modify-frame-parameters (selected-frame) geometry))))))
+
+;; 2. 退出时：抓取当前窗口的长宽、坐标以及是否最大化，并保存进缓存文件
+(add-hook 'kill-emacs-hook
+          (lambda ()
+            ;; 只在图形界面下记录，避免终端 (emacs -nw) 启动时覆盖正确的数据
+            (when (display-graphic-p)
+              (with-temp-file my-saved-frame-file
+                (prin1 `((width . ,(frame-parameter nil 'width))
+                         (height . ,(frame-parameter nil 'height))
+                         (top . ,(frame-parameter nil 'top))
+                         (left . ,(frame-parameter nil 'left))
+                         (fullscreen . ,(frame-parameter nil 'fullscreen)))
+                       (current-buffer))))))
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/myproj/org/")
