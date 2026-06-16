@@ -142,7 +142,8 @@
 
 (global-set-key (kbd "C-x m") 'consult-buffer)
 (global-set-key (kbd "C-c b") 'bing-dict-brief)
-(global-set-key (kbd "C-c d") 'dictionary-search)
+(global-set-key (kbd "C-c d") 'sdcv-search-pointer)
+(global-set-key (kbd "C-c D") 'sdcv-search-pointer+)
 (global-set-key (kbd "C-c C-p") 'delete-pair)
 (global-set-key (kbd "C-c y") 'google-translate-at-point)
 (global-set-key (kbd "C-x f") 'find-file-at-point)
@@ -1159,11 +1160,35 @@
 ;; doesn't work!
 ;; (use-package! ess-view-data)
 
-(after! sdcv
-  (setopt sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
-  (setopt sdcv-dictionary-simple-list
-          '("21世纪英汉汉英双向词典"))
+(use-package! sdcv
+  :config
+  ;; 1. 强行给 Emacs 注入 UTF-8 Locale 环境变量
+  ;; 这会让所有被 Emacs 唤起的子进程（包括 sdcv）都知道必须用 UTF-8 解析命令行参数
+  (setenv "LANG" "en_US.UTF-8")
+  (setenv "LC_ALL" "en_US.UTF-8")
+
+  ;; 2. 确保 Emacs 向系统管道发送数据时，使用纯正的 UTF-8 编码
+  (setq default-process-coding-system '(utf-8 . utf-8))
+  (add-to-list 'process-coding-system-alist '("sdcv" . (utf-8 . utf-8)))
+
+  ;; 设定你的 StarDict 词典总目录
+  (setq sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
+  ;; (setq sdcv-dictionary-data-dir "~/.local/share/stardict/dic")
+
+  ;; 【配置简单列表】：供 sdcv-search-pointer 使用
+  ;; 里面只放一本最精简的英汉词典，用于一瞥即懂的速查
+  (setq sdcv-dictionary-simple-list
+        '(
+          "21世纪英汉汉英双向词典"
+          "懒虫简明英汉词典"
+          ))
   )
+
+;; (after! sdcv
+;;   (setopt sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
+;;   (setopt sdcv-dictionary-simple-list
+;;           '("懒虫简明英汉词典"))
+;;   )
 
 
 ;; My Macros.
