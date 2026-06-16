@@ -905,6 +905,9 @@ Output code in clean blocks.")
   (set-popup-rule! "^\\*R.*\\*$" :side 'left :size 0.38 :select nil :ttl nil :quit nil :modeline t)
   )
 
+;; doesn't work!
+;; (use-package! ess-view-data)
+
 
 ;; Ways to disable smartparens for specific characters or fully in a mode.
 ;; https://github.com/hlissner/doom-emacs/issues/576
@@ -950,6 +953,7 @@ Output code in clean blocks.")
                ))
  )
 
+;; some settings for calendar and cal-china-x
 (use-package! cal-china-x
   :after calendar
   :autoload cal-china-x-setup
@@ -971,6 +975,23 @@ Output code in clean blocks.")
         (propertize "Wk"                  ; or e.g. "KW" in Germany
                     'font-lock-face 'font-lock-keyword-face))
   )
+
+;; Mark weekends days with a different color.
+
+;; 1. 定义一个独立的 Advice 函数
+(defun my-calendar-highlight-weekends (month year _indent)
+  "After generating the calendar MONTH and YEAR, highlight weekend days."
+  ;; 获取当前月准确的总天数（自动处理 2 月和闰年）
+  (let ((last-day (calendar-last-day-of-month month year)))
+    (dotimes (i last-day)
+      (let ((date (list month (1+ i) year)))
+        (if (or (= (calendar-day-of-week date) 0)   ; 0 代表周日
+                (= (calendar-day-of-week date) 6))  ; 6 代表周六
+            (calendar-mark-visible-date date 'font-lock-doc-string-face))))))
+
+;; 2. 使用符合 Emacs 30 标准的 advice-add 将其挂载为 :after 类型的钩子
+(advice-add 'calendar-generate-month :after #'my-calendar-highlight-weekends)
+
 
 ;; (after! elfeed
 ;;   :config
@@ -1083,22 +1104,6 @@ Output code in clean blocks.")
 ;; (after! elfeed-org
 ;;   (elfeed-org)
 ;;   (setq rmh-elfeed-org-files (list "~/myproj/org/elfeed.org")))
-
-;; Mark weekends days with a different color.
-
-;; 1. 定义一个独立的 Advice 函数
-(defun my-calendar-highlight-weekends (month year _indent)
-  "After generating the calendar MONTH and YEAR, highlight weekend days."
-  ;; 获取当前月准确的总天数（自动处理 2 月和闰年）
-  (let ((last-day (calendar-last-day-of-month month year)))
-    (dotimes (i last-day)
-      (let ((date (list month (1+ i) year)))
-        (if (or (= (calendar-day-of-week date) 0)   ; 0 代表周日
-                (= (calendar-day-of-week date) 6))  ; 6 代表周六
-            (calendar-mark-visible-date date 'font-lock-doc-string-face))))))
-
-;; 2. 使用符合 Emacs 30 标准的 advice-add 将其挂载为 :after 类型的钩子
-(advice-add 'calendar-generate-month :after #'my-calendar-highlight-weekends)
 
 ;; setup magit
 (after! magit
@@ -1232,14 +1237,11 @@ Output code in clean blocks.")
   )
 
 (after! which-key
-  (setopt which-key-use-C-h-commands t)
+  (setq which-key-use-C-h-commands t)
   ;; (define-key! which-key-mode-map (kbd "C-x <f5>") 'which-key-C-h-dispatch)
   ;; (setopt which-key-paging-prefixes '("C-x"))
   ;; (setopt which-key-paging-key "<f5>")
   )
-
-;; doesn't work!
-;; (use-package! ess-view-data)
 
 (use-package! sdcv
   :config
@@ -1265,17 +1267,12 @@ Output code in clean blocks.")
           ))
   )
 
-;; (after! sdcv
-;;   (setopt sdcv-dictionary-data-dir (expand-file-name "~/.local/share/stardict/dic"))
-;;   (setopt sdcv-dictionary-simple-list
-;;           '("懒虫简明英汉词典"))
-;;   )
-
 
 ;; My Macros.
 (defalias 'insertfootnote
   (kmacro "C-M-s M-e [ 0 - 9 ] <return> <return> C-<left> <left> C-S-<right> M-w C-M-s M-e C-y <return> <return> C-a M-x k i l l - l i n e <return> C-r s u b s e <return> C-M-s C-M-s <return> C-<left> <left> \\ f o o t n o t e { C-y <right> <right> C-S-<right> M-w C-<left> <left> C-<left> M-x r e p l a c e - s t r i n g <return> C-y <return> <return> <right> <backspace> <backspace> C-<left> <right> <delete> <left> C-<right> <right>"))
-;; Funcs
+
+;; Some useful Funcs
 (defun my-reverse-region (beg end)
   "Reverse characters between BEG and END."
   (interactive "r")
