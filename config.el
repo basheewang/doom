@@ -274,19 +274,32 @@
 (use-package! nerd-icons-ibuffer
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
+;; chatgpt-shell config
 ;; A function to merge two lists, where the second list's content is appended to the first list.
 (defun merge-list-to-list (dst src)
   "Merges content of the 2nd list(SRC) with the 1st one(DST)."
   (set dst
        (append (eval dst) src)))
 
-(after! chatgpt-shell
-  ;; (setq! chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")) ;; not working anymore!
-  (setopt chatgpt-shell-deepseek-key (getenv "DEEPSEEK_API_KEY"))
-  (setopt chatgpt-shell-google-key (getenv "GEMINI_API_KEY"))
-  ;; (setopt chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")) ;; not working anymore!
+(use-package! chatgpt-shell
+  :defer t
+  :config
+  ;; Define API keys for different providers (OpenAI, DeepSeek, Google Gemini, Anthropic)
+  ;; (setq chatgpt-shell-openai-key (getenv "OPENAI_API_KEY")) ;; not working anymore!
+  (setq chatgpt-shell-deepseek-key (getenv "DEEPSEEK_API_KEY"))
+  (setq chatgpt-shell-google-key (getenv "GEMINI_API_KEY"))
+  ;; (setq chatgpt-shell-anthropic-key (getenv "ANTHROPIC_API_KEY")) ;; not working anymore!
+
+  ;; 设定一个硬核的 System Prompt (提升 AI 输出的信噪比)
+  (setq chatgpt-shell-system-prompt
+        "You are an expert AI assistant and senior developer.
+Provide concise, accurate, and direct answers without unnecessary pleasantries.
+Output code in clean blocks.")
+
   (require 'ob-chatgpt-shell)
   (ob-chatgpt-shell-setup)
+
+  ;; other config
   ;; (merge-list-to-list 'chatgpt-shell-model-versions
   ;;                     '("gpt-3.5-turbo-16k-0613"
   ;;                       "gpt-3.5-turbo-1106"))
@@ -327,18 +340,24 @@
               (setq-local company-backends
                           '((company-capf :with company-yasnippet company-dabbrev-code)))
               ;; 确保 LSP 模式下弹窗速度与全局保持一致
-              (setq-local company-idle-delay 0.1))))
-
-;; enable auto format when save buffer.
-;;
-(after! eglot
-  (add-hook 'eglot-managed-mode-hook
-            (lambda ()
+              (setq-local company-idle-delay 0.1)
+              ;; enable auto format when save buffer.
               ;; 将 eglot-format-buffer 挂载到保存前的触发器上
               ;; 参数解释：
               ;; nil: 不指定特殊的执行优先级
               ;; t:   【核心机制】将这个 hook 设置为 Buffer-Local（仅当前文件生效）
-              (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
+              (add-hook 'before-save-hook #'eglot-format-buffer nil t)
+              )))
+
+;; ;;
+;; (after! eglot
+;;   (add-hook 'eglot-managed-mode-hook
+;;             (lambda ()
+;;               ;; 将 eglot-format-buffer 挂载到保存前的触发器上
+;;               ;; 参数解释：
+;;               ;; nil: 不指定特殊的执行优先级
+;;               ;; t:   【核心机制】将这个 hook 设置为 Buffer-Local（仅当前文件生效）
+;;               (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
 
 ;; corfu config
 ;; (after! corfu
