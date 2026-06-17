@@ -1295,43 +1295,69 @@ Output code in clean blocks.")
 ;; cape provides a collection of
 ;; completion-at-point-functions that can be used for completion at point.
 (use-package! cape
-  ;; Bind dedicated completion commands
-  ;; Alternative prefix keys: C-c p, M-p, M-+, ...
-  :bind (("C-c p p" . completion-at-point) ;; capf
-         ("C-c p t" . complete-tag)        ;; etags
-         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
-         ("C-c p h" . cape-history)
-         ("C-c p f" . cape-file)
-         ("C-c p k" . cape-keyword)
-         ("C-c p s" . cape-elisp-symbol)
-         ("C-c p e" . cape-elisp-block)
-         ("C-c p a" . cape-abbrev)
-         ("C-c p l" . cape-line)
-         ("C-c p w" . cape-dict)
-         ("C-c p :" . cape-emoji)
-         ("C-c p \\" . cape-tex)
-         ("C-c p _" . cape-tex)
-         ("C-c p ^" . cape-tex)
-         ("C-c p &" . cape-sgml)
-         ("C-c p r" . cape-rfc1345))
+  ;; 默认延迟加载，不拖慢启动速度
+  :defer t
   :init
-  ;; Add to the global default value of `completion-at-point-functions' which is
-  ;; used by `completion-at-point'.  The order of the functions matters, the
-  ;; first function returning a result wins.  Note that the list of buffer-local
-  ;; completion functions takes precedence over the global list.
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  ;; 1. 全局启用的通用补全源
+  ;; cape-file 是极其好用的刚需，当你在字符串里输入 / 或 ~/ 时，自动补全文件路径
   (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  ;;(add-to-list 'completion-at-point-functions #'cape-history)
-  ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;;(add-to-list 'completion-at-point-functions #'cape-tex)
-  ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
-  ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
-  ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
-  ;;(add-to-list 'completion-at-point-functions #'cape-dict)
-  ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
-  ;;(add-to-list 'completion-at-point-functions #'cape-line)
-  )
+
+  ;; cape-dabbrev 会从当前打开的所有 Buffer 中提取单词进行补全
+  ;; (注意：Company 自身已经自带了 company-dabbrev，如果你觉得重复可以注释掉这一行)
+  ;; (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+
+  ;; 2. 局部启用的特定补全源 (利用 Hook 精准打击)
+  ;; 只在写 Emacs Lisp 时，才启用 Elisp 符号和 Block 的补全
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (add-hook 'completion-at-point-functions #'cape-elisp-symbol nil t)
+              (add-hook 'completion-at-point-functions #'cape-elisp-block nil t)))
+
+  ;; 如果你写 LaTeX，只在 LaTeX 模式下挂载 tex 补全
+  (add-hook 'latex-mode-hook
+            (lambda ()
+              (add-hook 'completion-at-point-functions #'cape-tex nil t))))
+
+;; old config with global bindings for all cape functions,
+;; which is a bit too much and also causes some conflicts with company-dabbrev
+;; (use-package! cape
+;;   ;; Bind dedicated completion commands
+;;   ;; Alternative prefix keys: C-c p, M-p, M-+, ...
+;;   :bind (("C-x c p" . completion-at-point) ;; capf
+;;          ("C-x c t" . complete-tag)        ;; etags
+;;          ("C-x c d" . cape-dabbrev)        ;; or dabbrev-completion
+;;          ("C-x c h" . cape-history)
+;;          ("C-x c f" . cape-file)
+;;          ("C-x c k" . cape-keyword)
+;;          ("C-x c s" . cape-elisp-symbol)
+;;          ("C-x c e" . cape-elisp-block)
+;;          ("C-x c a" . cape-abbrev)
+;;          ("C-x c l" . cape-line)
+;;          ("C-x c w" . cape-dict)
+;;          ("C-x c :" . cape-emoji)
+;;          ("C-x c \\" . cape-tex)
+;;          ("C-x c _" . cape-tex)
+;;          ("C-x c ^" . cape-tex)
+;;          ("C-x c &" . cape-sgml)
+;;          ("C-x c r" . cape-rfc1345))
+;;   :init
+;;   ;; Add to the global default value of `completion-at-point-functions' which is
+;;   ;; used by `completion-at-point'.  The order of the functions matters, the
+;;   ;; first function returning a result wins.  Note that the list of buffer-local
+;;   ;; completion functions takes precedence over the global list.
+;;   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+;;   (add-to-list 'completion-at-point-functions #'cape-file)
+;;   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-history)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-keyword)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-tex)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-sgml)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-rfc1345)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-abbrev)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-dict)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+;;   ;;(add-to-list 'completion-at-point-functions #'cape-line)
+;;   )
 
 ;; (use-package! aider
 ;;   :config
