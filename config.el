@@ -1640,4 +1640,76 @@ This fixes an issue in Emacs 30 where depths greater than
   ;; 4. 关闭 LaTeX 编译时的临时文件回显噪音
   (setq imaxima-print-tex-command nil))
 
+;; configure dirvish
+(after! dirvish
+  ;; 1. 解除 Dirvish 对 M-s 的局部劫持
+  ;; 设为 nil 意味着：“我不处理这个按键，把它放行给全局变量”
+  (keymap-set dirvish-mode-map "M-s" nil)
+
+  ;; 2. 给 dirvish-setup-menu 重新找一个新家
+  ;; 比如换成 M-m (代表 Menu)，或者任何你喜欢的、未被占用的按键
+  (keymap-set dirvish-mode-map "M-]" #'dirvish-setup-menu))
+
+;; configure flyover
+(use-package! flyover
+  ;; 只有当语法检查模式启动时，才激活 flyover
+  :hook ((flycheck-mode . flyover-mode)
+         (flymake-mode . flyover-mode))
+  :config
+  ;; 1. 核心诊断源与层级设置
+  (setq flyover-checkers '(flycheck flymake)
+        flyover-levels '(error warning info))
+
+  ;; 2. 外观与当前 Doom 主题的色彩融合
+  (setq flyover-use-theme-colors t
+        flyover-background-lightness 50
+        ;; 文本与图标微调
+        flyover-text-tint 'lighter
+        flyover-text-tint-percent 80
+        flyover-icon-tint 'lighter
+        flyover-icon-tint-percent 50
+        flyover-icon-background-tint 'darker
+        flyover-icon-background-tint-percent 50)
+
+  ;; 3. 边框与图标样式 (Pill 胶囊样式在现代 UI 中非常高颜值)
+  (setq flyover-info-icon "🛈"
+        flyover-warning-icon "⚠"
+        flyover-error-icon "✘"
+        flyover-border-style 'pill
+        flyover-border-match-icon t
+        flyover-icon-left-padding 0.9
+        flyover-icon-right-padding 0.9
+        )
+
+  ;; 4. 虚拟行与提示布局
+  (setq flyover-hide-checker-name t
+        flyover-show-virtual-line t
+        flyover-virtual-line-type 'curved-dotted-arrow
+        flyover-line-position-offset 1
+        flyover-wrap-messages t
+        flyover-max-line-length 80)
+  ;;; Show error ID/code in the overlay (default: nil)
+  ;;; When enabled, displays the error identifier in brackets, e.g., "Missing semicolon [E001]"
+  ;;; Useful for looking up error codes or adding suppression comments
+  (setq flyover-show-error-id t)
+
+  ;; 5. 极致性能调优 (防抖动优化)
+  ;; 适当的防抖可以防止光标快速移动或频繁打字时，Overlay 疯狂刷新造成的屏幕闪烁和卡顿
+  (setq flyover-debounce-interval 0.25
+        flyover-cursor-debounce-interval 0.35
+        flyover-display-mode 'always
+        ;; 当 Company/Cape 补全菜单弹出时，自动隐藏错误提示，防止视觉冲突
+        flyover-hide-during-completion t)
+  )
+
+;; 解除 Flycheck 对 M-g n 和 M-g p 的局部劫持，让它们在 Flymake 模式下也能正常跳转错误
+(after! flymake
+  ;; 在 Flymake 模式下，局部接管跳转快捷键
+  (keymap-set flymake-mode-map "M-g n"   #'flymake-goto-next-error)
+  ;; (keymap-set flymake-mode-map "M-g M-n" #'flymake-goto-next-error)
+
+  (keymap-set flymake-mode-map "M-g p"   #'flymake-goto-prev-error)
+  ;; (keymap-set flymake-mode-map "M-g M-p" #'flymake-goto-prev-error)
+  )
+
 ;;; config.el ends here

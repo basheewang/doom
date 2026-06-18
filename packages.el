@@ -1,4 +1,6 @@
-;; -*- no-byte-compile: t; -*-
+;;; package -- summary  -*- no-byte-compile: t; -*-
+
+;;; commentary:
 ;;; $DOOMDIR/packages.el
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
@@ -48,6 +50,8 @@
 ;; (unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
+
+;;; code:
 
 ;; (unpin! straight)
 (unpin! org)
@@ -285,7 +289,6 @@
 ;; Download rime
 (package! rime)
 
-
 ;; ox-hugo package: A carefully crafted Org exporter back-end for Hugo
 ;; Remember to install: hugo and dart-sass.
 (package! ox-hugo
@@ -297,3 +300,15 @@
 
 ;; enable nerd-fonts-icons for ibuffer.
 (package! nerd-icons-ibuffer)
+
+;; flyover is a package that provides a simple way to display
+;; the documentation of the symbol at point in a floating window for
+;; flycheck, eglot, lsp-mode, and gopls.
+(package! flyover
+  :recipe
+  (
+   :host github
+   :repo "konrad1977/flyover"
+   ))
+
+;;; packages.el ends here
