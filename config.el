@@ -1,4 +1,4 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; package --- $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 ;;; commentary:
 ;; Place your private configuration here! Remember, you do not need to run 'doom
@@ -780,6 +780,11 @@ Output code in clean blocks.")
     (require 'org-download)
     (add-hook 'dired-mode-hook #'org-download-enable)))
 
+;; ox-hugo config
+(after! ox
+  (require 'ox-hugo))
+
+
 ;; (require 'pyim-basedict) ; 拼音词库设置，五笔用户 *不需要* 此行设置
 ;; (pyim-basedict-enable)   ; 拼音词库，五笔用户 *不需要* 此行设置
 (after! pyim
@@ -1363,16 +1368,16 @@ Output code in clean blocks.")
 ;;   :config
 ;;   (setq aider-args '("--model" "deepseek/deepseek-reasoner")))
 
-;; ;; (after! fcitx
-;; ;;   (setq fcitx-remote-command "fcitx5-remote"))
+;; (after! fcitx
+;;   (setq fcitx-remote-command "fcitx5-remote"))
 
-;; ;; (after! google-translate
-;; ;;   :config
-;; ;;   (
-;; ;;    (global-set-key "\C-cg" 'google-translate-at-point)
-;; ;;    (global-set-key "\C-cG" 'google-translate-query-translate)
-;; ;;    )
-;; ;;   )
+;; (after! google-translate
+;;   :config
+;;   (
+;;    (global-set-key "\C-cg" 'google-translate-at-point)
+;;    (global-set-key "\C-cG" 'google-translate-query-translate)
+;;    )
+;;   )
 
 ;; (use-package! aidermacs
 ;;   :bind  (
@@ -1400,10 +1405,10 @@ Output code in clean blocks.")
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
+              ("M-p" . 'copilot-accept-completion)
+              ;; ("TAB" . 'copilot-accept-completion)
+              ;; ("C-<tab>" . 'copilot-accept-completion-by-word)
+              ("M-o" . 'copilot-accept-completion-by-word))
   :config
   (add-to-list 'copilot-indentation-alist '(prog-mode 2))
   (add-to-list 'copilot-indentation-alist '(org-mode 2))
@@ -1554,11 +1559,85 @@ This fixes an issue in Emacs 30 where depths greater than
 ;;                        ) treesit-extra-load-path)))
 
 ;; gptel OPTIONAL configuration
-(setq gptel-model   'deepseek-reasoner
-      gptel-backend (gptel-make-deepseek "DeepSeek"
-                      :stream t
-                      :key (getenv "DEEPSEEK_API_KEY")))
+(use-package! gptel
+  :defer t
+  :config
+  (setq gptel-model   'deepseek-reasoner
+        gptel-backend (gptel-make-deepseek "DeepSeek"
+                        :stream t
+                        :key (getenv "DEEPSEEK_API_KEY"))))
 
-;; ox-hugo config
-(after! ox
-  (require 'ox-hugo))
+;; configure svg-tag-mode with custom tags and styles
+(use-package! svg-lib) ;; 这里可以直接去掉 :defer t
+(use-package! svg-tag-mode
+  :hook ((prog-mode . svg-tag-mode)
+         (org-mode . svg-tag-mode))
+  :config
+  ;; 【关键修复】：在定义这些标签前，强制加载 svg-lib，确保 svg-lib-tag 函数可用
+  (require 'svg-lib)
+
+  (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+  (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+  (defconst day-re "[a-zA-Z]\\{3\\}")
+  (defconst user-re "[A-Za-z0-9_]+")
+
+  (setq svg-tag-tags
+        `(
+          ;; 核心 TODO 标签
+          ("TODO" . ((lambda (tag)
+                       (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#FFB86C" :foreground "#282A36"))))
+          ("FIXME" . ((lambda (tag)
+                        (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#FF5555" :foreground "#F8F8F2"))))
+          ("BUG" . ((lambda (tag)
+                      (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#FF5555" :foreground "#F8F8F2"))))
+          ("DONE" . ((lambda (tag)
+                       (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#50FA7B" :foreground "#282A36"))))
+          ("NOTE" . ((lambda (tag)
+                       (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#8BE9FD" :foreground "#282A36"))))
+
+          ;; 动态捕获：匹配类似 TODO(Chen): 的格式
+          ("\\(TODO\\)(\\([a-zA-Z0-9_]+\\)):" .
+           ((lambda (tag)
+              (svg-lib-tag "TODO" nil :stroke 0 :margin 0 :background "#FFB86C" :foreground "#282A36"))
+            (lambda (tag)
+              (svg-lib-tag tag nil :stroke 0 :margin 0 :background "#6272A4" :foreground "#F8F8F2"))))
+
+          ;; 动态捕获：将日期格式转化为日历样式的标签
+          (,(format "\\(<%s>\\)" date-re) .
+           ((lambda (tag)
+              (svg-lib-tag tag nil :stroke 0 :margin 0 :padding 1 :background "#BD93F9" :foreground "#F8F8F2"))))
+          )
+        )
+  )
+
+;; Maxima configuration
+;; ======== Maxima 基础编辑模式 ========
+;; ======== Maxima 基础编辑模式 ========
+(use-package! maxima
+  ;; ✅ 修复这里：严格的 (("正则1" . mode) ("正则2" . mode)) 格式
+  :mode (("\\.mac\\'" . maxima-mode)
+         ("\\.max\\'" . maxima-mode))
+  :commands (maxima maxima-mode)
+  :config
+  ;; 允许在执行命令时自动弹出 Maxima 交互窗口
+  (setq maxima-display-buffer t))
+
+;; ======== iMaxima (图片公式渲染核心) ========
+(use-package! imaxima
+  :commands imaxima
+  :config
+  ;; 1. 图片清晰度与缩放 (专治高分屏)
+  (setq imaxima-scale-factor 1.5)
+
+  ;; 2. ✅ 完美修复：动态读取当前 Doom 主题的默认字体颜色和背景颜色
+  ;; face-foreground 和 face-background 会返回类似 "#F8F8F2" 的标准 16 进制颜色
+  (setq imaxima-fg-color (face-foreground 'default)
+        imaxima-bg-color (face-background 'default))
+
+  ;; 3. 指定底层渲染格式
+  (setq imaxima-image-type 'png)
+
+  ;; 4. 关闭 LaTeX 编译时的临时文件回显噪音
+  (setq imaxima-print-tex-command nil))
+
+;;; config.el ends here

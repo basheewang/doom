@@ -180,6 +180,7 @@
    :host github
    :repo "rougier/svg-lib"
    ))
+(package! svg-tag-mode)
 
 (package! sdcv
   :recipe
@@ -223,20 +224,6 @@
 ;;    :repo "tninja/aider.el"
 ;;    :files ("aider.el" "aider-core.el" "aider-file.el" "aider-code-change.el" "aider-discussion.el" "aider-prompt-mode.el" "aider-doom.el")
 ;;    ))
-;; (package!
-;;   aider :recipe
-;;   (
-;;    :host github
-;;    :repo "tninja/aider.el"
-;;    ;; :files ("aider.el" "aider-doom.el")
-;;    ))
-
-(package! google-translate
-  :recipe
-  (
-   :host github
-   :repo "atykhonov/google-translate"
-   ))
 
 ;; (package! aidermacs
 ;;   :recipe
@@ -245,6 +232,15 @@
 ;;    :repo "MatthewZMD/aidermacs"
 ;;    ))
 
+
+(package! google-translate
+  :recipe
+  (
+   :host github
+   :repo "atykhonov/google-translate"
+   ))
+
+;; Emacs interface to pdffonts and other PDF metadata
 (package! pdffontetc
   :recipe
   (
