@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mw
+# key: mwx
+# --
+\markword{\textbf{$1}}{${2:系动词}$3}$0

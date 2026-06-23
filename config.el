@@ -324,10 +324,32 @@ Output code in clean blocks.")
         company-show-quick-access t            ;; ✨ 使用最新版变量：在候选项旁显示 1-0 数字快捷键
         company-tooltip-limit 12)              ;; 限制最大显示候选项数量
 
+  ;; ==========================================
+  ;; 🎯 快捷键配置直接放在这里
+  ;; ==========================================
+  ;; 因为你开启了 company-tng-mode，回车键 (RET) 已经被释放为纯粹的“换行”了。
+  ;; 如果你有时不想按空格/标点来确认虚拟文本，而是想显式、强行上屏并继续留在当前行，
+  ;; 绑定一个专门的快捷键（比如 C-j）是非常完美的补充：
+  (keymap-set company-active-map "C-j" #'company-complete-selection)
+
+  ;; 如果你还想自定义其他的按键，比如用 M-n 和 M-p 上下翻页，也可以紧跟在这里写：
+  ;; (keymap-set company-active-map "M-n" #'company-select-next)
+  ;; (keymap-set company-active-map "M-p" #'company-select-previous)
+
   ;; 视觉弹窗设置 (配合 init.el 中的 +childframe)
   (when (modulep! :completion company +childframe)
     (after! company-box
       (setq company-box-doc-delay 0.5))))      ;; 停留0.5秒后自动弹出文档侧边栏
+
+;; 自定义 Company 补全弹窗的选中项颜色
+(custom-set-faces!
+  ;; 1. 控制你图中红框所在的整行背景色和文字颜色
+  ;; 这里我用了一个柔和的玫瑰红 (#FFCCCC) 作为例子，你可以替换成任何你喜欢的 Hex 颜色
+  '(company-tooltip-selection :background "#FFCCCC" :foreground "#000000" :weight bold)
+
+  ;; 2. (可选优化) 控制选中项中，和你已经输入的字母(比如图中 mwb)相匹配的那部分文字的颜色
+  ;; 保证在新的背景色下，高亮匹配的字母依然清晰可见
+  '(company-tooltip-common-selection :foreground "#D32F2F" :weight bold))
 
 ;; ========================================================
 ;; 2. Eglot 与 Company 完美融合配置
@@ -1710,6 +1732,27 @@ This fixes an issue in Emacs 30 where depths greater than
 
   (keymap-set flymake-mode-map "M-g p"   #'flymake-goto-prev-error)
   ;; (keymap-set flymake-mode-map "M-g M-p" #'flymake-goto-prev-error)
+  )
+
+;; hs-minor-mode 是 Emacs 内置的代码折叠工具，支持多种编程语言，但默认配置比较古老，使用起来不够顺手。下面是一些现代化的优化配置：
+(use-package! hideshow
+  ;; 1. 自动在所有编程语言模式下开启 hs-minor-mode
+  :hook (prog-mode . hs-minor-mode)
+
+  :init
+  ;; 2. 修改默认的前缀快捷键 (默认是 C-c @)
+  ;; 注意：这个变量必须在 hideshow 真正加载之前设置，否则快捷键表无法正确生成
+  (setq hs-minor-mode-prefix (kbd "M-o"))
+
+  :config
+  ;; 3. (强烈推荐的优化)
+  ;; 虽然上面把前缀改成了 M-o，但 hideshow 默认的后续按键带 Ctrl (例如隐藏是 M-o C-h)
+  ;; 这样按起来非常割裂。我们可以直接在它的 keymap 里覆盖成纯字母快捷键：
+  (keymap-set hs-minor-mode-map "M-o h" #'hs-hide-block)      ;; 隐藏当前代码块 (hide)
+  (keymap-set hs-minor-mode-map "M-o s" #'hs-show-block)      ;; 展开当前代码块 (show)
+  (keymap-set hs-minor-mode-map "M-o t" #'hs-toggle-hiding)   ;; 切换折叠/展开状态 (toggle)
+  (keymap-set hs-minor-mode-map "M-o a" #'hs-hide-all)        ;; 隐藏全部代码块 (all)
+  (keymap-set hs-minor-mode-map "M-o A" #'hs-show-all)       ;; 展开全部代码块
   )
 
 ;;; config.el ends here

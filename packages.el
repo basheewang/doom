@@ -145,7 +145,7 @@
 (package! asy-mode
   :recipe
   (
-   :local-repo "/home/coeus/usr/local/texlive/2026/texmf-dist/asymptote"
+   :local-repo "/home/coeus/usr/local/texlive/2024/texmf-dist/asymptote"
    ))
 
 (package! chinese-conv

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: mwzc
+# key: mwzc
+# --
+\markword[\mbox]{{${1}}}{主语（主从）}$0
