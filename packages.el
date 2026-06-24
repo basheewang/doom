@@ -311,4 +311,16 @@
    :repo "konrad1977/flyover"
    ))
 
+;; agent-shell is A native Emacs buffer to interact with LLM agents powered by ACP.
+;; (package! shell-maker) ; on MELPA, plain is fine
+;; (package! acp
+;;   :recipe (
+;;            :host github
+;;            :repo "xenodium/acp.el"))
+;; (package! agent-shell
+;;   :recipe (
+;;            :host github
+;;            :repo "xenodium/agent-shell"))
+
+
 ;;; packages.el ends here

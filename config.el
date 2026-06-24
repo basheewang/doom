@@ -1827,4 +1827,13 @@ ONLY-EXISTING 非空时，只更新已经带 [..] 的标题。"
 ;;     :background ,(doom-color 'orange)
 ;;     :weight bold))
 
+;; config for agent-shell
+;; (use-package! agent-shell
+;;   ;; (require 'acp)
+;;   ;; (require 'agent-shell)
+;;   :config
+;;   (setq agent-shell-google-authentication
+;;         (agent-shell-google-make-authentication :login t))
+;;   )
+
 ;;; config.el ends here
