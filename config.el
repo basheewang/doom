@@ -1755,4 +1755,76 @@ This fixes an issue in Emacs 30 where depths greater than
   (keymap-set hs-minor-mode-map "M-o A" #'hs-show-all)       ;; 展开全部代码块
   )
 
+
+;; define a function to count direct children in org-mode
+(defun my/org-count-direct-children ()
+  "统计当前标题下直接子标题（仅低一级）的数量."
+  (save-excursion
+    (org-back-to-heading t)
+    (let* ((level (org-current-level))
+           (end (save-excursion (org-end-of-subtree t t) (point)))
+           ;; 行首恰好 level+1 个星号后跟空格 → 只匹配直接子标题
+           (regexp (format "^\\*\\{%d\\} " (1+ level)))
+           (count 0))
+      (forward-line 1)
+      (while (re-search-forward regexp end t)
+        (setq count (1+ count)))
+      count)))
+
+(defun my/org-update-child-count-cookie (&optional only-existing)
+  "在当前标题末尾插入/更新 [N] 子标题计数.
+ONLY-EXISTING 非空时，只更新已经带 [..] 的标题。"
+  (save-excursion
+    (org-back-to-heading t)
+    (let* ((heading (org-get-heading t t t t))            ; 去掉 tag/todo/优先级
+           (has (string-match-p "\\[[0-9]*\\]\\s-*\\'" heading)))
+      (when (or (not only-existing) has)
+        (let* ((count (my/org-count-direct-children))
+               (base (replace-regexp-in-string "[ \t]*\\[[0-9]*\\]\\s-*\\'" "" heading)))
+          ;; org-edit-headline 只改标题正文，自动保留 tag 和 TODO 关键字
+          (org-edit-headline (concat base (format " [%d]" count))))))))
+
+(defun my/org-update-all-child-count-cookies ()
+  "更新当前 buffer 中所有已带 [..] cookie 的标题."
+  (interactive)
+  (when (derived-mode-p 'org-mode)
+    (org-with-wide-buffer
+     (org-map-entries (lambda () (my/org-update-child-count-cookie t))))))
+
+;; 保存时自动刷新所有计数
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook
+                      #'my/org-update-all-child-count-cookies nil t)))
+
+;; Customize the appearance of the child count cookie
+;; 1. 定义专属 face（前景 + 背景 + 加粗，颜色随你改）
+(defface my/org-child-count-cookie
+  '((t :foreground "white" :background "DarkOrange" :weight bold))
+  "Face for [N] child-count cookies in Org headlines.")
+
+;; 2. 让 Org 标题行里最后一个 [数字] 套用这个 face
+(defun my/org-fontify-child-count ()
+  "在 Org mode 中高亮显示标题末尾的 [N] 子标题计数."
+  (font-lock-add-keywords
+   nil
+   '(("^\\*+ .*\\(\\[[0-9]+\\]\\)" 1 'my/org-child-count-cookie prepend))
+   'append)
+  (font-lock-flush))   ; 立即刷新当前 buffer
+
+(add-hook 'org-mode-hook #'my/org-fontify-child-count)
+
+;; 在 Doom 里更推荐用 custom-set-faces!
+;; Doom 用户改 face 颜色最好用这个宏,能正确接管主题 (not works with defface)
+;; (custom-set-faces!
+;;   '(my/org-child-count-cookie
+;;     :foreground "white"
+;;     :background "DarkOrange"
+;;     :weight bold))
+;; (custom-set-faces!
+;;   `(my/org-child-count-cookie
+;;     :foreground ,(doom-color 'bg)
+;;     :background ,(doom-color 'orange)
+;;     :weight bold))
+
 ;;; config.el ends here
